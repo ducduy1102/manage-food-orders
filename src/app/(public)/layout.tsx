@@ -21,6 +21,7 @@ export default function Layout({
             <Package2 className="w-6 h-6" />
             <span className="sr-only">Big boy</span>
           </Link>
+          {/* PC */}
           <NavItems className="flex-shrink-0 transition-colors text-muted-foreground hover:text-foreground" />
         </nav>
         <Sheet>
@@ -43,7 +44,7 @@ export default function Layout({
                 <Package2 className="w-6 h-6" />
                 <span className="sr-only">Big boy</span>
               </Link>
-
+              {/* Mobile */}
               <NavItems className="transition-colors text-muted-foreground hover:text-foreground" />
             </nav>
           </SheetContent>

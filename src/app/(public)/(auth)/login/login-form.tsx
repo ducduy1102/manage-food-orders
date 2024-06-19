@@ -13,8 +13,12 @@ import { useForm } from "react-hook-form";
 import { Form, FormField, FormItem, FormMessage } from "@/components/ui/form";
 import { LoginBody, LoginBodyType } from "@/schemaValidations/auth.schema";
 import { zodResolver } from "@hookform/resolvers/zod";
+import { useLoginMutation } from "@/queries/useAuth";
+import { toast } from "@/components/ui/use-toast";
+import { handleErrorApi } from "@/lib/utils";
 
 export default function LoginForm() {
+  const loginMutation = useLoginMutation();
   const form = useForm<LoginBodyType>({
     resolver: zodResolver(LoginBody),
     defaultValues: {
@@ -22,6 +26,20 @@ export default function LoginForm() {
       password: "",
     },
   });
+
+  const onSubmit = async (data: LoginBodyType) => {
+    // Khi nhấn submit thì React hook form sẽ validate form bằng zod schema ở client trước
+    // Nếu ko pass qua vòng này thì sẽ ko gọi api
+    if (loginMutation.isPending) return;
+    try {
+      const result = await loginMutation.mutateAsync(data);
+      toast({
+        description: result.payload.message,
+      });
+    } catch (error: any) {
+      handleErrorApi({ error, setError: form.setError });
+    }
+  };
 
   return (
     <Card className="max-w-sm mx-auto">
@@ -36,6 +54,9 @@ export default function LoginForm() {
           <form
             className="space-y-2 max-w-[600px] flex-shrink-0 w-full"
             noValidate
+            onSubmit={form.handleSubmit(onSubmit, (err) => {
+              console.warn(err);
+            })}
           >
             <div className="grid gap-4">
               <FormField
