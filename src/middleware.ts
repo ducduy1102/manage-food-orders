@@ -7,7 +7,6 @@ const unAuthPaths = ["/login"];
 // This function can be marked `async` if using `await` inside
 export function middleware(request: NextRequest) {
   const { pathname } = request.nextUrl;
-  // pathname: /manage/dashboard
   const isAuth = !!request.cookies.get("accessToken")?.value;
   // Chưa đăng nhập thì không cho vào private paths
   if (privatePaths.some((path) => pathname.startsWith(path)) && !isAuth) {
