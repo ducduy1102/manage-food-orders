@@ -13,12 +13,19 @@ import { zodResolver } from "@hookform/resolvers/zod";
 import { Form, FormField, FormItem, FormMessage } from "@/components/ui/form";
 import { Avatar, AvatarFallback, AvatarImage } from "@/components/ui/avatar";
 import { useEffect, useMemo, useRef, useState } from "react";
-import { useAccountProfile } from "@/queries/useAccount";
+import { useAccountMe, useUpdateMeMutation } from "@/queries/useAccount";
+import { useUploadMediaMutation } from "@/queries/useMedia";
+import { toast } from "@/components/ui/use-toast";
+import { handleErrorApi } from "@/lib/utils";
+import envConfig from "@/config";
 
 export default function UpdateProfileForm() {
   const [file, setFile] = useState<File | null>(null);
   const avatarInputRef = useRef<HTMLInputElement>(null);
-  const { data } = useAccountProfile();
+  const { data, refetch } = useAccountMe();
+  const updateMeMutation = useUpdateMeMutation();
+  const uploadMediaMution = useUploadMediaMutation();
+
   const form = useForm<UpdateMeBodyType>({
     resolver: zodResolver(UpdateMeBody),
     defaultValues: {
@@ -40,6 +47,7 @@ export default function UpdateProfileForm() {
   }, [form, data]);
 
   // Nếu dùng Nextjs 15 tức react 19 thì ko cần dùng useMemo chỗ này
+  // const previewAvatar = file ? URL.createObjectURL(file) : avatar
   const previewAvatar = useMemo(() => {
     if (file) {
       return URL.createObjectURL(file);
@@ -47,11 +55,49 @@ export default function UpdateProfileForm() {
     return avatar;
   }, [avatar, file]);
 
+  const reset = () => {
+    form.reset();
+    setFile(null);
+  };
+
+  const onSubmit = async (values: UpdateMeBodyType) => {
+    if (updateMeMutation.isPending) return;
+    try {
+      let body = values;
+      if (file) {
+        const formData = new FormData();
+        formData.append("file", file);
+        const uploadImageResult = await uploadMediaMution.mutateAsync(formData);
+        const imageUrl = uploadImageResult.payload.data;
+        body = {
+          ...values,
+          avatar: imageUrl,
+        };
+
+        const result = await updateMeMutation.mutateAsync(body);
+        toast({
+          description: result.payload.message,
+        });
+        // update img avatar
+        refetch();
+      }
+    } catch (error) {
+      handleErrorApi({
+        error,
+        setError: form.setError,
+      });
+    }
+  };
+
   return (
     <Form {...form}>
       <form
         noValidate
         className="grid items-start gap-4 auto-rows-max md:gap-8"
+        onReset={reset}
+        onSubmit={form.handleSubmit(onSubmit, (e) => {
+          console.log(e);
+        })}
       >
         <Card x-chunk="dashboard-07-chunk-0">
           <CardHeader>
@@ -80,6 +126,9 @@ export default function UpdateProfileForm() {
                           const file = e.target.files?.[0];
                           if (file) {
                             setFile(file);
+                            field.onChange(
+                              envConfig.NEXT_PUBLIC_URL + "/" + field.name
+                            );
                           }
                         }}
                       />
