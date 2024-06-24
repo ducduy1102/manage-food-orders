@@ -1,8 +1,18 @@
 "use client";
 
 import RefreshToken from "@/components/refresh-token";
+import {
+  getAccessTokenFromLocalStorage,
+  removeTokensFromLocalStorage,
+} from "@/lib/utils";
 import { QueryClient, QueryClientProvider } from "@tanstack/react-query";
-import React from "react";
+import React, {
+  createContext,
+  useCallback,
+  useContext,
+  useEffect,
+  useState,
+} from "react";
 
 const queryClient = new QueryClient({
   defaultOptions: {
@@ -13,17 +23,47 @@ const queryClient = new QueryClient({
   },
 });
 
+const AppContext = createContext({
+  isAuth: false,
+  setIsAuth: (isAuth: boolean) => {},
+});
+
+export const useAppContext = () => {
+  return useContext(AppContext);
+};
+
 export default function AppProvider({
   children,
 }: {
   children: React.ReactNode;
 }) {
+  const [isAuth, setIsAuthState] = useState(false);
+  useEffect(() => {
+    const accessToken = getAccessTokenFromLocalStorage();
+    if (accessToken) {
+      setIsAuthState(true);
+    }
+  }, []);
+
+  // Dùng Next.js 15 và React 19 thì không cần dùng useCallback đoạn này cũng được
+  const setIsAuth = useCallback((isAuth: boolean) => {
+    if (isAuth) {
+      setIsAuthState(true);
+    } else {
+      setIsAuthState(false);
+      removeTokensFromLocalStorage();
+    }
+  }, []);
+
+  // Nếu dùng React 19 và Next.js 15 thì không cần AppContext.Provider, chỉ cần AppContext là đủ
   return (
-    <QueryClientProvider client={queryClient}>
-      <RefreshToken />
-      {/* <ReactQueryDevtools initialIsOpen=
+    <AppContext.Provider value={{ isAuth, setIsAuth }}>
+      <QueryClientProvider client={queryClient}>
+        <RefreshToken />
+        {/* <ReactQueryDevtools initialIsOpen=
       {false} /> */}
-      {children}
-    </QueryClientProvider>
+        {children}
+      </QueryClientProvider>
+    </AppContext.Provider>
   );
 }
