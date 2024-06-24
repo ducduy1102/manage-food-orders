@@ -25,7 +25,8 @@ export default function LogoutPage() {
     ) {
       return;
     }
-    ref.current = mutateAsync().then((res) => {
+    ref.current = mutateAsync;
+    mutateAsync().then((res) => {
       setTimeout(() => {
         ref.current = null;
       }, 1000);
