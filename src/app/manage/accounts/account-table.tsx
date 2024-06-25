@@ -53,6 +53,7 @@ import {
 } from "@/components/ui/alert-dialog";
 import { useSearchParams } from "next/navigation";
 import AutoPagination from "@/components/auto-pagination";
+import { useGetAccountList } from "@/queries/useAccount";
 
 type AccountItem = AccountListResType["data"][0];
 
@@ -69,6 +70,14 @@ const AccountTableContext = createContext<{
 });
 
 export const columns: ColumnDef<AccountType>[] = [
+  // Nếu muốn tự generate ra thêm cột STT ko có trong api
+  // {
+  //   id: "stt",
+  //   header: "STT",
+  //   cell: ({ row }) => {
+  //     return <>{row.index}</>;
+  //   },
+  // },
   {
     accessorKey: "id",
     header: "ID",
@@ -105,11 +114,11 @@ export const columns: ColumnDef<AccountType>[] = [
         </Button>
       );
     },
-    cell: ({ row }) => <div className="lowercase">{row.getValue("email")}</div>,
   },
   {
     id: "actions",
     enableHiding: false,
+    header: "Actions",
     cell: function Actions({ row }) {
       const { setEmployeeIdEdit, setEmployeeDelete } =
         useContext(AccountTableContext);
@@ -188,13 +197,14 @@ export default function AccountTable() {
   const [employeeDelete, setEmployeeDelete] = useState<AccountItem | null>(
     null
   );
-  const data: any[] = [];
+  const accountListQuery = useGetAccountList();
+  const data = accountListQuery.data?.payload.data ?? [];
   const [sorting, setSorting] = useState<SortingState>([]);
   const [columnFilters, setColumnFilters] = useState<ColumnFiltersState>([]);
   const [columnVisibility, setColumnVisibility] = useState<VisibilityState>({});
   const [rowSelection, setRowSelection] = useState({});
   const [pagination, setPagination] = useState({
-    pageIndex, // Gía trị mặc định ban đầu, không có ý nghĩa khi data được fetch bất đồng bộ
+    pageIndex, // Giá trị mặc định ban đầu, không có ý nghĩa khi data được fetch bất đồng bộ
     pageSize: PAGE_SIZE, //default page size
   });
 
