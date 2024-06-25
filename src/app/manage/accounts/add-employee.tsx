@@ -22,10 +22,17 @@ import { useForm } from "react-hook-form";
 import { Form, FormField, FormItem, FormMessage } from "@/components/ui/form";
 import { Avatar, AvatarFallback, AvatarImage } from "@/components/ui/avatar";
 import envConfig from "@/config";
+import { useAddAccountMutation } from "@/queries/useAccount";
+import { useUploadMediaMutation } from "@/queries/useMedia";
+import { toast } from "@/components/ui/use-toast";
+import { handleErrorApi } from "@/lib/utils";
 
 export default function AddEmployee() {
   const [file, setFile] = useState<File | null>(null);
   const [open, setOpen] = useState(false);
+  const addAccountMutation = useAddAccountMutation();
+  const uploadMediaMutation = useUploadMediaMutation();
+
   const avatarInputRef = useRef<HTMLInputElement | null>(null);
   const form = useForm<CreateEmployeeAccountBodyType>({
     resolver: zodResolver(CreateEmployeeAccountBody),
@@ -45,6 +52,40 @@ export default function AddEmployee() {
     }
     return avatar;
   }, [file, avatar]);
+
+  const reset = () => {
+    form.reset();
+    setFile(null);
+  };
+  const onSubmit = async (values: CreateEmployeeAccountBodyType) => {
+    if (addAccountMutation.isPending) return;
+    try {
+      let body = values;
+      if (file) {
+        const formData = new FormData();
+        formData.append("file", file);
+        const uploadImageResult = await uploadMediaMutation.mutateAsync(
+          formData
+        );
+        const imageUrl = uploadImageResult.payload.data;
+        body = {
+          ...values,
+          avatar: imageUrl,
+        };
+      }
+      const result = await addAccountMutation.mutateAsync(body);
+      toast({
+        description: result.payload.message,
+      });
+      reset();
+      setOpen(false);
+    } catch (error) {
+      handleErrorApi({
+        error,
+        setError: form.setError,
+      });
+    }
+  };
 
   return (
     <Dialog onOpenChange={setOpen} open={open}>
@@ -68,6 +109,10 @@ export default function AddEmployee() {
             noValidate
             className="grid items-start gap-4 auto-rows-max md:gap-8"
             id="add-employee-form"
+            onSubmit={form.handleSubmit(onSubmit, (e) => {
+              console.log(e);
+            })}
+            onReset={reset}
           >
             <div className="grid gap-4 py-4">
               <FormField
@@ -91,7 +136,7 @@ export default function AddEmployee() {
                           if (file) {
                             setFile(file);
                             field.onChange(
-                              envConfig.NEXT_PUBLIC_URL + file.name
+                              envConfig.NEXT_PUBLIC_URL + "/" + file.name
                             );
                           }
                         }}

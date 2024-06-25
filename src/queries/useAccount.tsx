@@ -35,7 +35,7 @@ export const useGetAccount = ({ id }: { id: number }) => {
   });
 };
 
-export const useAddAcountMutation = () => {
+export const useAddAccountMutation = () => {
   const queryClient = useQueryClient();
   return useMutation({
     mutationFn: accountApiRequest.addEmployee,

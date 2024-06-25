@@ -73,14 +73,13 @@ export default function UpdateProfileForm() {
           ...values,
           avatar: imageUrl,
         };
-
-        const result = await updateMeMutation.mutateAsync(body);
-        toast({
-          description: result.payload.message,
-        });
-        // update img avatar
-        refetch();
       }
+      const result = await updateMeMutation.mutateAsync(body);
+      toast({
+        description: result.payload.message,
+      });
+      // update img avatar
+      refetch();
     } catch (error) {
       handleErrorApi({
         error,
