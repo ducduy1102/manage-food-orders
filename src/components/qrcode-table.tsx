@@ -52,6 +52,6 @@ export default function QRCodeTable({
         canvasContext.drawImage(virtualCanvas, 0, 0, width, width);
       }
     );
-  }, [token, tableNumber]);
+  }, [token, width, tableNumber]);
   return <canvas ref={canvasRef} />;
 }
