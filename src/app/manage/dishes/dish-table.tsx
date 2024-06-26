@@ -50,6 +50,8 @@ import AutoPagination from "@/components/auto-pagination";
 import { DishListResType } from "@/schemaValidations/dish.schema";
 import EditDish from "@/app/manage/dishes/edit-dish";
 import AddDish from "@/app/manage/dishes/add-dish";
+import { useGetDishList } from "@/queries/useDish";
+import DOMPurify from "dompurify";
 
 type DishItem = DishListResType["data"][0];
 
@@ -101,7 +103,9 @@ export const columns: ColumnDef<DishItem>[] = [
     header: "Mô tả",
     cell: ({ row }) => (
       <div
-        dangerouslySetInnerHTML={{ __html: row.getValue("description") }}
+        dangerouslySetInnerHTML={{
+          __html: DOMPurify.sanitize(row.getValue("description")),
+        }}
         className="whitespace-pre-line"
       />
     ),
@@ -188,7 +192,8 @@ export default function DishTable() {
   const pageIndex = page - 1;
   const [dishIdEdit, setDishIdEdit] = useState<number | undefined>();
   const [dishDelete, setDishDelete] = useState<DishItem | null>(null);
-  const data: any[] = [];
+  const dishListQuery = useGetDishList();
+  const data = dishListQuery.data?.payload.data ?? [];
   const [sorting, setSorting] = useState<SortingState>([]);
   const [columnFilters, setColumnFilters] = useState<ColumnFiltersState>([]);
   const [columnVisibility, setColumnVisibility] = useState<VisibilityState>({});
