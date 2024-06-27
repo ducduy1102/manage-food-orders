@@ -40,6 +40,7 @@ import { useAddDishMutation } from "@/queries/useDish";
 import { useUploadMediaMutation } from "@/queries/useMedia";
 import envConfig from "@/config";
 import { toast } from "@/components/ui/use-toast";
+import revalidateApiRequest from "@/apiRequests/revalidate";
 
 export default function AddDish() {
   const [file, setFile] = useState<File | null>(null);
@@ -86,13 +87,14 @@ export default function AddDish() {
           ...values,
           image: imageUrl,
         };
-        const result = await addDishMutation.mutateAsync(body);
-        toast({
-          description: result.payload.message,
-        });
-        reset();
-        setOpen(false);
       }
+      const result = await addDishMutation.mutateAsync(body);
+      await revalidateApiRequest("dishes");
+      toast({
+        description: result.payload.message,
+      });
+      reset();
+      setOpen(false);
     } catch (error) {
       handleErrorApi({
         error,
