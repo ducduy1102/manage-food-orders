@@ -1,5 +1,11 @@
 import envConfig from "@/config";
-import { normalizePath } from "@/lib/utils";
+import {
+  getAccessTokenFromLocalStorage,
+  normalizePath,
+  removeTokensFromLocalStorage,
+  setAccessTokenToLocalStorage,
+  setRefreshTokenToLocalStorage,
+} from "@/lib/utils";
 import { LoginResType } from "@/schemaValidations/auth.schema";
 import { redirect } from "next/navigation";
 
@@ -55,7 +61,7 @@ export class EntityError extends HttpError {
   }
 }
 
-// chỉ thực hiện ở client
+// Chỉ thực hiện ở client
 // export const clientSessionToken = new SessionToken();
 let clientLogoutRequest: null | Promise<any> = null;
 const isClient = typeof window !== "undefined";
@@ -81,7 +87,7 @@ const request = async <Response>(
         };
 
   if (isClient) {
-    const accessToken = localStorage.getItem("accessToken");
+    const accessToken = getAccessTokenFromLocalStorage();
     if (accessToken) {
       baseHeaders.Authorization = `Bearer ${accessToken}`;
     }
@@ -131,8 +137,7 @@ const request = async <Response>(
             await clientLogoutRequest;
           } catch (error) {
           } finally {
-            localStorage.removeItem("accessToken");
-            localStorage.removeItem("refreshToken");
+            removeTokensFromLocalStorage();
             clientLogoutRequest = null;
             // Redirect về trang login có thể dẫn đến loop vô hạn nếu ko dc xử lý đúng cách
             // Vì nếu rơi vào TH tại trang login, chúng ta có gọi các API cần accessToken
@@ -156,13 +161,14 @@ const request = async <Response>(
   // Đảm bảo logic dưới đây chỉ chạy ở phía client (browser)
   if (isClient) {
     const normalizeUrl = normalizePath(url);
-    if (normalizeUrl === "api/auth/login") {
+    if (["api/auth/login", "api/guest/auth/login"].includes(normalizeUrl)) {
       const { accessToken, refreshToken } = (payload as LoginResType).data;
-      localStorage.setItem("accessToken", accessToken);
-      localStorage.setItem("refreshToken", refreshToken);
-    } else if (normalizeUrl === "api/auth/logout") {
-      localStorage.removeItem("accessToken");
-      localStorage.removeItem("refreshToken");
+      setAccessTokenToLocalStorage(accessToken);
+      setRefreshTokenToLocalStorage(refreshToken);
+    } else if (
+      ["api/auth/logout", "api/guest/auth/logout"].includes(normalizeUrl)
+    ) {
+      removeTokensFromLocalStorage();
     }
   }
   return data;

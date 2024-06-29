@@ -1,16 +1,16 @@
-import { DishStatusValues, RoleValues } from '@/constants/type'
-import { AccountSchema } from '@/schemaValidations/account.schema'
-import z from 'zod'
+import { DishStatusValues, RoleValues } from "@/constants/type";
+import { AccountSchema } from "@/schemaValidations/account.schema";
+import z from "zod";
 
 export const GuestLoginBody = z
   .object({
-    name: z.string(),
+    name: z.string().min(2).max(50),
     tableNumber: z.number(),
-    token: z.string()
+    token: z.string(),
   })
-  .strict()
+  .strict();
 
-export type GuestLoginBodyType = z.TypeOf<typeof GuestLoginBody>
+export type GuestLoginBodyType = z.TypeOf<typeof GuestLoginBody>;
 
 export const GuestLoginRes = z.object({
   data: z.object({
@@ -19,26 +19,26 @@ export const GuestLoginRes = z.object({
     guest: z.object({
       id: z.number(),
       name: z.string(),
-      role: z.enum(RoleValues)
-    })
+      role: z.enum(RoleValues),
+    }),
   }),
-  message: z.string()
-})
+  message: z.string(),
+});
 
-export type GuestLoginResType = z.TypeOf<typeof GuestLoginRes>
+export type GuestLoginResType = z.TypeOf<typeof GuestLoginRes>;
 
 export const GuestCreateOrdersBody = z
   .object({
     orders: z.array(
       z.object({
         dishId: z.number(),
-        quantity: z.number()
+        quantity: z.number(),
       })
-    )
+    ),
   })
-  .strict()
+  .strict();
 
-export type GuestCreateOrdersBodyType = z.TypeOf<typeof GuestCreateOrdersBody>
+export type GuestCreateOrdersBodyType = z.TypeOf<typeof GuestCreateOrdersBody>;
 const DishSnapshotSchema = z.object({
   id: z.number(),
   name: z.string(),
@@ -48,8 +48,8 @@ const DishSnapshotSchema = z.object({
   status: z.enum(DishStatusValues),
   dishId: z.number().nullable(),
   createdAt: z.date(),
-  updatedAt: z.date()
-})
+  updatedAt: z.date(),
+});
 
 export const GuestCreateOrdersRes = z.object({
   message: z.string(),
@@ -60,7 +60,7 @@ export const GuestCreateOrdersRes = z.object({
       guest: z
         .object({
           id: z.number(),
-          name: z.string()
+          name: z.string(),
         })
         .nullable(),
       tableNumber: z.number().nullable(),
@@ -68,11 +68,11 @@ export const GuestCreateOrdersRes = z.object({
       dishSnapshot: DishSnapshotSchema,
       quantity: z.number(),
       orderHandlerId: z.number().nullable(),
-      orderHandler: AccountSchema.nullable()
+      orderHandler: AccountSchema.nullable(),
     })
-  )
-})
+  ),
+});
 
-export type GuestCreateOrdersResType = z.TypeOf<typeof GuestCreateOrdersRes>
+export type GuestCreateOrdersResType = z.TypeOf<typeof GuestCreateOrdersRes>;
 
-export const GuestGetOrdersRes = z.object({})
+export const GuestGetOrdersRes = z.object({});
