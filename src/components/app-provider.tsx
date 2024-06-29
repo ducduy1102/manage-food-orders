@@ -45,6 +45,7 @@ export default function AppProvider({
     const accessToken = getAccessTokenFromLocalStorage();
     if (accessToken) {
       const role = decodeToken(accessToken).role;
+      setRoleState(role);
     }
   }, []);
 
