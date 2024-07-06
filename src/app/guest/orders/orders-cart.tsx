@@ -1,20 +1,54 @@
 "use client";
 
 import { Badge } from "@/components/ui/badge";
+import socket from "@/lib/socket";
 import { formatCurrency, getVietnameseOrderStatus } from "@/lib/utils";
 import { useGuestGetOrderList } from "@/queries/useGuest";
+import { UpdateOrderResType } from "@/schemaValidations/order.schema";
 import Image from "next/image";
-import { useMemo } from "react";
+import { useEffect, useMemo, useState } from "react";
 
 export default function OrdersCart() {
-  const { data } = useGuestGetOrderList();
+  const { data, refetch } = useGuestGetOrderList();
   const orders = useMemo(() => data?.payload.data ?? [], [data]);
+  // const [isConnected, setIsConnected] = useState(socket.connected);
 
   const totalPrice = useMemo(() => {
     return orders.reduce((result, order) => {
       return result + order.dishSnapshot.price * order.quantity;
     }, 0);
   }, [orders]);
+
+  console.log(orders);
+  useEffect(() => {
+    if (socket.connected) {
+      onConnect();
+    }
+
+    function onConnect() {
+      console.log(socket.id);
+    }
+
+    function onDisconnect() {
+      console.log("disconnect");
+    }
+
+    function onUpdateOrder(data: UpdateOrderResType["data"]) {
+      refetch();
+    }
+
+    socket.on("update-order", onUpdateOrder);
+
+    socket.on("connect", onConnect);
+    socket.on("disconnect", onDisconnect);
+
+    return () => {
+      socket.off("connect", onConnect);
+      socket.off("disconnect", onDisconnect);
+      socket.off("update-order", onUpdateOrder);
+    };
+  }, [refetch]);
+
   return (
     <>
       {orders.map((order, index) => (
