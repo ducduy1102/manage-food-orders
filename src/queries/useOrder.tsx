@@ -22,7 +22,7 @@ export const useGetOrderList = (queryParams: GetOrdersQueryParamsType) => {
   });
 };
 
-export const useGetQueryDetail = ({
+export const useGetOrderDetailQuery = ({
   id,
   enabled,
 }: {
