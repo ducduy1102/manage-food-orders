@@ -16,11 +16,14 @@ import React, {
   useState,
 } from "react";
 
+// Default
+// staleTime: 0
+// gc: 5 phút (5 * 1000* 60)
+
 const queryClient = new QueryClient({
   defaultOptions: {
     queries: {
       refetchOnWindowFocus: false,
-      refetchOnMount: false,
     },
   },
 });
