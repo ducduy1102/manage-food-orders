@@ -19,7 +19,7 @@ export const useUpdateOrderMutation = () => {
 export const useGetOrderList = (queryParams: GetOrdersQueryParamsType) => {
   return useQuery({
     queryFn: () => orderApiRequest.getOrderList(queryParams),
-    queryKey: ["admin-orders", queryParams],
+    queryKey: ["orders", queryParams],
   });
 };
 

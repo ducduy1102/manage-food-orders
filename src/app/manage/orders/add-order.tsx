@@ -26,9 +26,13 @@ import GuestsDialog from "@/app/manage/orders/guests-dialog";
 import { CreateOrdersBodyType } from "@/schemaValidations/order.schema";
 import Quantity from "@/app/guest/menu/quantity";
 import Image from "next/image";
-import { cn, formatCurrency } from "@/lib/utils";
+import { cn, formatCurrency, handleErrorApi } from "@/lib/utils";
 import { DishStatus } from "@/constants/type";
 import { DishListResType } from "@/schemaValidations/dish.schema";
+import { useGetDishList } from "@/queries/useDish";
+import { useCreateOrderMutation } from "@/queries/useOrder";
+import { useCreatGuestMutation } from "@/queries/useAccount";
+import { toast } from "@/components/ui/use-toast";
 
 export default function AddOrder() {
   const [open, setOpen] = useState(false);
@@ -37,7 +41,8 @@ export default function AddOrder() {
   >(null);
   const [isNewGuest, setIsNewGuest] = useState(true);
   const [orders, setOrders] = useState<CreateOrdersBodyType["orders"]>([]);
-  const dishes: DishListResType["data"] = [];
+  const { data } = useGetDishList();
+  const dishes = useMemo(() => data?.payload.data ?? [], [data]);
 
   const totalPrice = useMemo(() => {
     return dishes.reduce((result, dish) => {
@@ -46,6 +51,8 @@ export default function AddOrder() {
       return result + order.quantity * dish.price;
     }, 0);
   }, [dishes, orders]);
+  const createOrderMutation = useCreateOrderMutation();
+  const createGuestMutation = useCreatGuestMutation();
 
   const form = useForm<GuestLoginBodyType>({
     resolver: zodResolver(GuestLoginBody),
@@ -72,10 +79,54 @@ export default function AddOrder() {
     });
   };
 
-  const handleOrder = async () => {};
+  const handleOrder = async () => {
+    try {
+      let guestId = selectedGuest?.id;
+      if (isNewGuest) {
+        const guestRes = await createGuestMutation.mutateAsync({
+          name,
+          tableNumber,
+        });
+        guestId = guestRes.payload.data.id;
+      }
+
+      if (!guestId) {
+        toast({
+          description: "Hãy chọn 1 khách hàng",
+        });
+        return;
+      }
+      await createOrderMutation.mutateAsync({
+        guestId,
+        orders,
+      });
+      reset();
+    } catch (error) {
+      handleErrorApi({
+        error,
+        setError: form.setError,
+      });
+    }
+  };
+
+  const reset = () => {
+    form.reset();
+    setSelectedGuest(null);
+    setIsNewGuest(true);
+    setOrders([]);
+    setOpen(false);
+  };
 
   return (
-    <Dialog onOpenChange={setOpen} open={open}>
+    <Dialog
+      onOpenChange={(value) => {
+        if (!value) {
+          reset();
+        }
+        setOpen(value);
+      }}
+      open={open}
+    >
       <DialogTrigger asChild>
         <Button size="sm" className="gap-1 h-7">
           <PlusCircle className="h-3.5 w-3.5" />
