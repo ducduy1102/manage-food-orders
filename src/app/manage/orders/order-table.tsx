@@ -183,13 +183,13 @@ export default function OrderTable() {
     }
 
     function onUpdateOrder(data: UpdateOrderResType["data"]) {
-      console.log(data);
+      // console.log(data);
       const {
         dishSnapshot: { name },
         quantity,
       } = data;
       toast({
-        description: `Món ăn ${name} (SL: ${quantity}) đã được cập nhật sang trạng thái "${getVietnameseOrderStatus(
+        description: `Món ${name} (SL: ${quantity}) đã được cập nhật sang trạng thái "${getVietnameseOrderStatus(
           data.status
         )}" !`,
       });
@@ -214,7 +214,7 @@ export default function OrderTable() {
     }
 
     socket.on("update-order", onUpdateOrder);
-    socket.on("new-oder", onNewOrder);
+    socket.on("new-order", onNewOrder);
     socket.on("connect", onConnect);
     socket.on("disconnect", onDisconnect);
     socket.on("payment", onPayment);
