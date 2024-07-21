@@ -11,7 +11,7 @@ const menuItems = [
   {
     title: "Dashboard",
     Icon: Home,
-    href: "/",
+    href: "/manage/dashboard",
   },
   {
     title: "Đơn hàng",
@@ -27,12 +27,6 @@ const menuItems = [
     title: "Món ăn",
     Icon: Salad,
     href: "/manage/dishes",
-  },
-
-  {
-    title: "Phân tích",
-    Icon: LineChart,
-    href: "/manage/analytics",
   },
   {
     title: "Nhân viên",
