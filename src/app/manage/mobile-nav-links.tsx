@@ -11,10 +11,6 @@ import { usePathname } from "next/navigation";
 export default function MobileNavLinks() {
   const pathname = usePathname();
   const role = useAppContext();
-  console.log(
-    "🚀 ~ file: mobile-nav-links.tsx:14 ~ MobileNavLinks ~ role:",
-    role
-  );
   // const {role} = accessToken ? decodeToken(accessToken) : {role: undefined};
   return (
     <Sheet>

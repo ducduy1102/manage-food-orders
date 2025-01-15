@@ -3,7 +3,7 @@
 import { Badge } from "@/components/ui/badge";
 import { toast } from "@/components/ui/use-toast";
 import { OrderStatus } from "@/constants/type";
-import socket from "@/lib/socket";
+import { useAppContext } from "@/components/app-provider";
 import { formatCurrency, getVietnameseOrderStatus } from "@/lib/utils";
 import { useGuestGetOrderList } from "@/queries/useGuest";
 import {
@@ -16,6 +16,7 @@ import { useEffect, useMemo, useState } from "react";
 export default function OrdersCart() {
   const { data, refetch } = useGuestGetOrderList();
   const orders = useMemo(() => data?.payload.data ?? [], [data]);
+  const { socket } = useAppContext();
   // const [isConnected, setIsConnected] = useState(socket.connected);
 
   const { waitingForPaying, paid } = useMemo(() => {
@@ -63,12 +64,12 @@ export default function OrdersCart() {
 
   console.log(orders);
   useEffect(() => {
-    if (socket.connected) {
+    if (socket?.connected) {
       onConnect();
     }
 
     function onConnect() {
-      console.log(socket.id);
+      console.log(socket?.id);
     }
 
     function onDisconnect() {
@@ -97,44 +98,44 @@ export default function OrdersCart() {
       refetch();
     }
 
-    socket.on("update-order", onUpdateOrder);
-    socket.on("payment", onPayment);
-    socket.on("connect", onConnect);
-    socket.on("disconnect", onDisconnect);
+    socket?.on("update-order", onUpdateOrder);
+    socket?.on("payment", onPayment);
+    socket?.on("connect", onConnect);
+    socket?.on("disconnect", onDisconnect);
 
     return () => {
-      socket.off("connect", onConnect);
-      socket.off("disconnect", onDisconnect);
-      socket.off("update-order", onUpdateOrder);
-      socket.off("payment", onPayment);
+      socket?.off("connect", onConnect);
+      socket?.off("disconnect", onDisconnect);
+      socket?.off("update-order", onUpdateOrder);
+      socket?.off("payment", onPayment);
     };
-  }, [refetch]);
+  }, [refetch, socket]);
 
   return (
     <>
       {orders.map((order, index) => (
-        <div key={order.id} className="flex gap-4">
-          <div className="text-sm font-semibold">{index + 1}</div>
-          <div className="relative flex-shrink-0">
+        <div key={order.id} className='flex gap-4'>
+          <div className='text-sm font-semibold'>{index + 1}</div>
+          <div className='relative flex-shrink-0'>
             <Image
               src={order.dishSnapshot.image}
               alt={order.dishSnapshot.name}
               height={100}
               width={100}
               quality={100}
-              className="object-cover w-[80px] h-[80px] rounded-md"
+              className='object-cover w-[80px] h-[80px] rounded-md'
             />
           </div>
-          <div className="space-y-1">
-            <h3 className="text-sm">{order.dishSnapshot.name}</h3>
-            <div className="text-xs font-semibold">
+          <div className='space-y-1'>
+            <h3 className='text-sm'>{order.dishSnapshot.name}</h3>
+            <div className='text-xs font-semibold'>
               {formatCurrency(order.dishSnapshot.price)} x{" "}
-              <Badge className="px-1 pointer-events-none">
+              <Badge className='px-1 pointer-events-none'>
                 {order.quantity}
               </Badge>
             </div>
           </div>
-          <div className="flex items-center justify-center flex-shrink-0 ml-auto">
+          <div className='flex items-center justify-center flex-shrink-0 ml-auto'>
             <Badge variant={"outline"}>
               {getVietnameseOrderStatus(order.status)}
             </Badge>
@@ -142,15 +143,15 @@ export default function OrdersCart() {
         </div>
       ))}
       {paid.quantity !== 0 && (
-        <div className="sticky bottom-0 ">
-          <div className="flex w-full space-x-4 text-xl font-semibold">
+        <div className='sticky bottom-0 '>
+          <div className='flex w-full space-x-4 text-xl font-semibold'>
             <span>Đơn đã thanh toán · {paid.quantity} món</span>
             <span>{formatCurrency(paid.price)}</span>
           </div>
         </div>
       )}
-      <div className="sticky bottom-0 ">
-        <div className="flex w-full space-x-4 text-xl font-semibold">
+      <div className='sticky bottom-0 '>
+        <div className='flex w-full space-x-4 text-xl font-semibold'>
           <span>Đơn chưa thanh toán · {waitingForPaying.quantity} món</span>
           <span>{formatCurrency(waitingForPaying.price)}</span>
         </div>

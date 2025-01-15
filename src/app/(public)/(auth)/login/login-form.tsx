@@ -15,7 +15,7 @@ import { LoginBody, LoginBodyType } from "@/schemaValidations/auth.schema";
 import { zodResolver } from "@hookform/resolvers/zod";
 import { useLoginMutation } from "@/queries/useAuth";
 import { toast } from "@/components/ui/use-toast";
-import { handleErrorApi } from "@/lib/utils";
+import { generateSocketInstace, handleErrorApi } from "@/lib/utils";
 import { useRouter, useSearchParams } from "next/navigation";
 import { useEffect } from "react";
 import { useAppContext } from "@/components/app-provider";
@@ -24,7 +24,7 @@ export default function LoginForm() {
   const loginMutation = useLoginMutation();
   const searchParams = useSearchParams();
   const clearTokens = searchParams.get("clearTokens");
-  const { setRole } = useAppContext();
+  const { setRole, setSocket } = useAppContext();
   const form = useForm<LoginBodyType>({
     resolver: zodResolver(LoginBody),
     defaultValues: {
@@ -50,15 +50,16 @@ export default function LoginForm() {
       });
       setRole(result.payload.data.account.role);
       router.push("/manage/dashboard");
+      setSocket(generateSocketInstace(result.payload.data.accessToken));
     } catch (error: any) {
       handleErrorApi({ error, setError: form.setError });
     }
   };
 
   return (
-    <Card className="max-w-sm mx-auto">
+    <Card className='max-w-sm mx-auto'>
       <CardHeader>
-        <CardTitle className="text-2xl">Đăng nhập</CardTitle>
+        <CardTitle className='text-2xl'>Đăng nhập</CardTitle>
         <CardDescription>
           Nhập email và mật khẩu của bạn để đăng nhập vào hệ thống
         </CardDescription>
@@ -66,24 +67,24 @@ export default function LoginForm() {
       <CardContent>
         <Form {...form}>
           <form
-            className="space-y-2 max-w-[600px] flex-shrink-0 w-full"
+            className='space-y-2 max-w-[600px] flex-shrink-0 w-full'
             noValidate
             onSubmit={form.handleSubmit(onSubmit, (err) => {
               console.warn(err);
             })}
           >
-            <div className="grid gap-4">
+            <div className='grid gap-4'>
               <FormField
                 control={form.control}
-                name="email"
+                name='email'
                 render={({ field }) => (
                   <FormItem>
-                    <div className="grid gap-2">
-                      <Label htmlFor="email">Email</Label>
+                    <div className='grid gap-2'>
+                      <Label htmlFor='email'>Email</Label>
                       <Input
-                        id="email"
-                        type="email"
-                        placeholder="m@example.com"
+                        id='email'
+                        type='email'
+                        placeholder='m@example.com'
                         required
                         {...field}
                       />
@@ -94,16 +95,16 @@ export default function LoginForm() {
               />
               <FormField
                 control={form.control}
-                name="password"
+                name='password'
                 render={({ field }) => (
                   <FormItem>
-                    <div className="grid gap-2">
-                      <div className="flex items-center">
-                        <Label htmlFor="password">Password</Label>
+                    <div className='grid gap-2'>
+                      <div className='flex items-center'>
+                        <Label htmlFor='password'>Password</Label>
                       </div>
                       <Input
-                        id="password"
-                        type="password"
+                        id='password'
+                        type='password'
                         required
                         {...field}
                       />
@@ -112,10 +113,10 @@ export default function LoginForm() {
                   </FormItem>
                 )}
               />
-              <Button type="submit" className="w-full">
+              <Button type='submit' className='w-full'>
                 Đăng nhập
               </Button>
-              <Button variant="outline" className="w-full" type="button">
+              <Button variant='outline' className='w-full' type='button'>
                 Đăng nhập bằng Google
               </Button>
             </div>

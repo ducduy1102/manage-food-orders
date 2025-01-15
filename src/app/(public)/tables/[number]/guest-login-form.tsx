@@ -14,10 +14,10 @@ import { useParams, useRouter, useSearchParams } from "next/navigation";
 import { useEffect } from "react";
 import { useGuestLoginMutation } from "@/queries/useGuest";
 import { useAppContext } from "@/components/app-provider";
-import { handleErrorApi } from "@/lib/utils";
+import { generateSocketInstace, handleErrorApi } from "@/lib/utils";
 
 export default function GuestLoginForm() {
-  const { setRole } = useAppContext();
+  const { setRole, setSocket } = useAppContext();
   const searchParams = useSearchParams();
   const params = useParams();
   // console.log(params, searchParams.get("token"));
@@ -45,6 +45,7 @@ export default function GuestLoginForm() {
     try {
       const result = await loginMutation.mutateAsync(values);
       setRole(result.payload.data.guest.role);
+      setSocket(generateSocketInstace(result.payload.data.accessToken));
       router.push("/guest/menu");
     } catch (error) {
       handleErrorApi({
@@ -55,33 +56,33 @@ export default function GuestLoginForm() {
   }
 
   return (
-    <Card className="max-w-sm mx-auto">
+    <Card className='max-w-sm mx-auto'>
       <CardHeader>
-        <CardTitle className="text-2xl">Đăng nhập gọi món</CardTitle>
+        <CardTitle className='text-2xl'>Đăng nhập gọi món</CardTitle>
       </CardHeader>
       <CardContent>
         <Form {...form}>
           <form
-            className="space-y-2 max-w-[600px] flex-shrink-0 w-full"
+            className='space-y-2 max-w-[600px] flex-shrink-0 w-full'
             noValidate
             onSubmit={form.handleSubmit(onSubmit, console.log)}
           >
-            <div className="grid gap-4">
+            <div className='grid gap-4'>
               <FormField
                 control={form.control}
-                name="name"
+                name='name'
                 render={({ field }) => (
                   <FormItem>
-                    <div className="grid gap-2">
-                      <Label htmlFor="name">Tên khách hàng</Label>
-                      <Input id="name" type="text" required {...field} />
+                    <div className='grid gap-2'>
+                      <Label htmlFor='name'>Tên khách hàng</Label>
+                      <Input id='name' type='text' required {...field} />
                       <FormMessage />
                     </div>
                   </FormItem>
                 )}
               />
 
-              <Button type="submit" className="w-full">
+              <Button type='submit' className='w-full'>
                 Đăng nhập
               </Button>
             </div>

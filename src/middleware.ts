@@ -1,7 +1,11 @@
 import { Role } from "@/constants/type";
-import { decodeToken } from "@/lib/utils";
 import { NextResponse } from "next/server";
 import type { NextRequest } from "next/server";
+import jwt from "jsonwebtoken";
+import { TokenPayload } from "@/types/jwt.types";
+const decodeToken = (token: string) => {
+  return jwt.decode(token) as TokenPayload;
+};
 
 const managePaths = ["/manage"];
 const guestPaths = ["/guest"];
@@ -53,7 +57,11 @@ export function middleware(request: NextRequest) {
     const isNotGuestGoToOwnerPath =
       role !== Role.Owner &&
       onlyOwnerPaths.some((path) => pathname.startsWith(path));
-    if (isGuestGoToManagePath || isNotGuestGoToGuestPath || isNotGuestGoToOwnerPath) {
+    if (
+      isGuestGoToManagePath ||
+      isNotGuestGoToGuestPath ||
+      isNotGuestGoToOwnerPath
+    ) {
       return NextResponse.redirect(new URL("/", request.url));
     }
   }

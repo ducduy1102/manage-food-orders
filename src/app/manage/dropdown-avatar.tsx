@@ -24,7 +24,7 @@ const account = {
 export default function DropdownAvatar() {
   const logoutMutation = useLogoutMutation();
   const router = useRouter();
-  const { setRole } = useAppContext();
+  const { setRole, disconnectSocket } = useAppContext();
   const { data } = useAccountMe();
   const account = data?.payload.data;
   const logout = async () => {
@@ -32,6 +32,7 @@ export default function DropdownAvatar() {
     try {
       await logoutMutation.mutateAsync();
       setRole();
+      disconnectSocket();
       router.push("/");
     } catch (error: any) {
       handleErrorApi({
@@ -43,9 +44,9 @@ export default function DropdownAvatar() {
     <DropdownMenu>
       <DropdownMenuTrigger asChild>
         <Button
-          variant="outline"
-          size="icon"
-          className="overflow-hidden rounded-full"
+          variant='outline'
+          size='icon'
+          className='overflow-hidden rounded-full'
         >
           <Avatar>
             <AvatarImage
@@ -58,11 +59,11 @@ export default function DropdownAvatar() {
           </Avatar>
         </Button>
       </DropdownMenuTrigger>
-      <DropdownMenuContent align="end">
+      <DropdownMenuContent align='end'>
         <DropdownMenuLabel>{account?.name}</DropdownMenuLabel>
         <DropdownMenuSeparator />
         <DropdownMenuItem asChild>
-          <Link href={"/manage/setting"} className="cursor-pointer">
+          <Link href={"/manage/setting"} className='cursor-pointer'>
             Cài đặt
           </Link>
         </DropdownMenuItem>

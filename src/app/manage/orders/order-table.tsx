@@ -55,7 +55,7 @@ import { toast } from "@/components/ui/use-toast";
 import { GuestCreateOrdersResType } from "@/schemaValidations/guest.schema";
 import { useGetOrderList, useUpdateOrderMutation } from "@/queries/useOrder";
 import { useTableList } from "@/queries/useTable";
-import socket from "@/lib/socket";
+import { useAppContext } from "@/components/app-provider";
 
 export const OrderTableContext = createContext({
   setOrderIdEdit: (value: number | undefined) => {},
@@ -85,6 +85,7 @@ const initFromDate = startOfDay(new Date());
 const initToDate = endOfDay(new Date());
 export default function OrderTable() {
   const searchParam = useSearchParams();
+  const { socket } = useAppContext();
   const [openStatusFilter, setOpenStatusFilter] = useState(false);
   const [fromDate, setFromDate] = useState(initFromDate);
   const [toDate, setToDate] = useState(initToDate);
@@ -163,12 +164,12 @@ export default function OrderTable() {
   };
 
   useEffect(() => {
-    if (socket.connected) {
+    if (socket?.connected) {
       onConnect();
     }
 
     function onConnect() {
-      console.log(socket.id);
+      console.log(socket?.id);
     }
 
     function onDisconnect() {
@@ -213,20 +214,20 @@ export default function OrderTable() {
       refetch();
     }
 
-    socket.on("update-order", onUpdateOrder);
-    socket.on("new-order", onNewOrder);
-    socket.on("connect", onConnect);
-    socket.on("disconnect", onDisconnect);
-    socket.on("payment", onPayment);
+    socket?.on("update-order", onUpdateOrder);
+    socket?.on("new-order", onNewOrder);
+    socket?.on("connect", onConnect);
+    socket?.on("disconnect", onDisconnect);
+    socket?.on("payment", onPayment);
 
     return () => {
-      socket.off("connect", onConnect);
-      socket.off("disconnect", onDisconnect);
-      socket.off("update-order", onUpdateOrder);
-      socket.off("new-order", onNewOrder);
-      socket.off("payment", onPayment);
+      socket?.off("connect", onConnect);
+      socket?.off("disconnect", onDisconnect);
+      socket?.off("update-order", onUpdateOrder);
+      socket?.off("new-order", onNewOrder);
+      socket?.off("payment", onPayment);
     };
-  }, [refetchOrderList, fromDate, toDate]);
+  }, [refetchOrderList, fromDate, toDate, socket]);
 
   return (
     <OrderTableContext.Provider
@@ -237,69 +238,69 @@ export default function OrderTable() {
         orderObjectByGuestId,
       }}
     >
-      <div className="w-full">
+      <div className='w-full'>
         <EditOrder
           id={orderIdEdit}
           setId={setOrderIdEdit}
           onSubmitSuccess={() => {}}
         />
-        <div className="flex items-center ">
-          <div className="flex flex-wrap gap-2">
-            <div className="flex items-center">
-              <span className="mr-2">Từ</span>
+        <div className='flex items-center '>
+          <div className='flex flex-wrap gap-2'>
+            <div className='flex items-center'>
+              <span className='mr-2'>Từ</span>
               <Input
-                type="datetime-local"
-                placeholder="Từ ngày"
-                className="text-sm"
+                type='datetime-local'
+                placeholder='Từ ngày'
+                className='text-sm'
                 value={format(fromDate, "yyyy-MM-dd HH:mm").replace(" ", "T")}
                 onChange={(event) => setFromDate(new Date(event.target.value))}
               />
             </div>
-            <div className="flex items-center">
-              <span className="mr-2">Đến</span>
+            <div className='flex items-center'>
+              <span className='mr-2'>Đến</span>
               <Input
-                type="datetime-local"
-                placeholder="Đến ngày"
+                type='datetime-local'
+                placeholder='Đến ngày'
                 value={format(toDate, "yyyy-MM-dd HH:mm").replace(" ", "T")}
                 onChange={(event) => setToDate(new Date(event.target.value))}
               />
             </div>
-            <Button className="" variant={"outline"} onClick={resetDateFilter}>
+            <Button className='' variant={"outline"} onClick={resetDateFilter}>
               Reset
             </Button>
           </div>
-          <div className="ml-auto">
+          <div className='ml-auto'>
             <AddOrder />
           </div>
         </div>
-        <div className="flex flex-wrap items-center gap-4 py-4">
+        <div className='flex flex-wrap items-center gap-4 py-4'>
           <Input
-            placeholder="Tên khách"
+            placeholder='Tên khách'
             value={
               (table.getColumn("guestName")?.getFilterValue() as string) ?? ""
             }
             onChange={(event) =>
               table.getColumn("guestName")?.setFilterValue(event.target.value)
             }
-            className="max-w-[100px]"
+            className='max-w-[100px]'
           />
           <Input
-            placeholder="Số bàn"
+            placeholder='Số bàn'
             value={
               (table.getColumn("tableNumber")?.getFilterValue() as string) ?? ""
             }
             onChange={(event) =>
               table.getColumn("tableNumber")?.setFilterValue(event.target.value)
             }
-            className="max-w-[80px]"
+            className='max-w-[80px]'
           />
           <Popover open={openStatusFilter} onOpenChange={setOpenStatusFilter}>
             <PopoverTrigger asChild>
               <Button
-                variant="outline"
-                role="combobox"
+                variant='outline'
+                role='combobox'
                 aria-expanded={openStatusFilter}
-                className="w-[150px] text-sm justify-between"
+                className='w-[150px] text-sm justify-between'
               >
                 {table.getColumn("status")?.getFilterValue()
                   ? getVietnameseOrderStatus(
@@ -308,10 +309,10 @@ export default function OrderTable() {
                         ?.getFilterValue() as (typeof OrderStatusValues)[number]
                     )
                   : "Trạng thái"}
-                <ChevronsUpDown className="w-4 h-4 ml-2 opacity-50 shrink-0" />
+                <ChevronsUpDown className='w-4 h-4 ml-2 opacity-50 shrink-0' />
               </Button>
             </PopoverTrigger>
-            <PopoverContent className="w-[200px] p-0">
+            <PopoverContent className='w-[200px] p-0'>
               <Command>
                 <CommandGroup>
                   <CommandList>
@@ -356,7 +357,7 @@ export default function OrderTable() {
         />
         {orderListQuery.isPending && <TableSkeleton />}
         {!orderListQuery.isPending && (
-          <div className="border rounded-md">
+          <div className='border rounded-md'>
             <Table>
               <TableHeader>
                 {table.getHeaderGroups().map((headerGroup) => (
@@ -397,7 +398,7 @@ export default function OrderTable() {
                   <TableRow>
                     <TableCell
                       colSpan={orderTableColumns.length}
-                      className="h-24 text-center"
+                      className='h-24 text-center'
                     >
                       No results.
                     </TableCell>
@@ -407,8 +408,8 @@ export default function OrderTable() {
             </Table>
           </div>
         )}
-        <div className="flex items-center justify-end py-4 space-x-2">
-          <div className="flex-1 py-4 text-xs text-muted-foreground ">
+        <div className='flex items-center justify-end py-4 space-x-2'>
+          <div className='flex-1 py-4 text-xs text-muted-foreground '>
             Hiển thị{" "}
             <strong>{table.getPaginationRowModel().rows.length}</strong> trong{" "}
             <strong>{orderList.length}</strong> kết quả
@@ -417,7 +418,7 @@ export default function OrderTable() {
             <AutoPagination
               page={table.getState().pagination.pageIndex + 1}
               pageSize={table.getPageCount()}
-              pathname="/manage/orders"
+              pathname='/manage/orders'
             />
           </div>
         </div>
