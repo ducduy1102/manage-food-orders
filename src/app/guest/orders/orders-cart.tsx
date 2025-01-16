@@ -3,7 +3,7 @@
 import { Badge } from "@/components/ui/badge";
 import { toast } from "@/components/ui/use-toast";
 import { OrderStatus } from "@/constants/type";
-import { useAppContext } from "@/components/app-provider";
+import { useAppStore } from "@/components/app-provider";
 import { formatCurrency, getVietnameseOrderStatus } from "@/lib/utils";
 import { useGuestGetOrderList } from "@/queries/useGuest";
 import {
@@ -16,7 +16,8 @@ import { useEffect, useMemo, useState } from "react";
 export default function OrdersCart() {
   const { data, refetch } = useGuestGetOrderList();
   const orders = useMemo(() => data?.payload.data ?? [], [data]);
-  const { socket } = useAppContext();
+  const socket = useAppStore((state) => state.socket);
+
   // const [isConnected, setIsConnected] = useState(socket.connected);
 
   const { waitingForPaying, paid } = useMemo(() => {

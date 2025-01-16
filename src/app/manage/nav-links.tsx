@@ -1,6 +1,6 @@
 "use client";
 import menuItems from "@/app/manage/menuItems";
-import { useAppContext } from "@/components/app-provider";
+import { useAppStore } from "@/components/app-provider";
 import {
   Tooltip,
   TooltipContent,
@@ -15,7 +15,7 @@ import { usePathname } from "next/navigation";
 // Dành cho desktop
 export default function NavLinks() {
   const pathname = usePathname();
-  const {role} = useAppContext();
+  const role = useAppStore((state) => state.role);
 
   return (
     <TooltipProvider>
@@ -26,7 +26,7 @@ export default function NavLinks() {
             className='flex items-center justify-center gap-2 text-lg font-semibold rounded-full group h-9 w-9 shrink-0 bg-primary text-primary-foreground md:h-8 md:w-8 md:text-base'
           >
             <Package2 className='w-4 h-4 transition-all group-hover:scale-110' />
-            <span className='sr-only'>Acme Inc</span>
+            <span className='sr-only'>HaNa Restaurant</span>
           </Link>
 
           {menuItems.map((Item, index) => {

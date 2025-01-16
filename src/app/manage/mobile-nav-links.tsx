@@ -1,6 +1,6 @@
 "use client";
 import menuItems from "@/app/manage/menuItems";
-import { useAppContext } from "@/components/app-provider";
+import { useAppStore } from "@/components/app-provider";
 import { Button } from "@/components/ui/button";
 import { Sheet, SheetContent, SheetTrigger } from "@/components/ui/sheet";
 import { cn } from "@/lib/utils";
@@ -10,7 +10,7 @@ import { usePathname } from "next/navigation";
 
 export default function MobileNavLinks() {
   const pathname = usePathname();
-  const role = useAppContext();
+  const role = useAppStore((state) => state.role);
   // const {role} = accessToken ? decodeToken(accessToken) : {role: undefined};
   return (
     <Sheet>
@@ -27,7 +27,7 @@ export default function MobileNavLinks() {
             className='group flex h-10 w-10 shrink-0 items-center justify-center gap-2 rounded-full bg-primary text-lg font-semibold text-primary-foreground md:text-base'
           >
             <Package2 className='h-5 w-5 transition-all group-hover:scale-110' />
-            <span className='sr-only'>Acme Inc</span>
+            <span className='sr-only'>HaNa Restaurant</span>
           </Link>
           {menuItems.map((Item, index) => {
             const isActive = pathname === Item.href;
