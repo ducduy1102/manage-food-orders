@@ -79,8 +79,6 @@ export default function AppProvider({
 }: {
   children: React.ReactNode;
 }) {
-  // const [socket, setSocket] = useState<Socket | undefined>();
-  // const [role, setRoleState] = useState<RoleType | undefined>();
   const setRole = useAppStore((state) => state.setRole);
   const setSocket = useAppStore((state) => state.setSocket);
   const count = useRef(0);
@@ -95,21 +93,6 @@ export default function AppProvider({
       count.current++;
     }
   }, [setRole, setSocket]);
-
-  // const disconnectSocket = useCallback(() => {
-  //   socket?.disconnect();
-  //   setSocket(undefined);
-  // }, [socket, setSocket]);
-
-  // Dùng Next.js 15 và React 19 thì không cần dùng useCallback đoạn này cũng được
-  // const setRole = useCallback((role?: RoleType | undefined) => {
-  //   setRoleState(role);
-  //   if (!role) {
-  //     removeTokensFromLocalStorage();
-  //   }
-  // }, []);
-
-  // const isAuth = Boolean(role);
 
   // Nếu dùng React 19 và Next.js 15 thì không cần AppContext.Provider, chỉ cần AppContext là đủ
   return (
