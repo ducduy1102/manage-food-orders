@@ -1,5 +1,6 @@
 "use client";
 
+import ListenLogoutSocket from "@/components/listen-logout-socket";
 import RefreshToken from "@/components/refresh-token";
 import {
   decodeToken,
@@ -89,6 +90,7 @@ export default function AppProvider({
         {/* <ReactQueryDevtools initialIsOpen=
       {false} /> */}
         {children}
+        <ListenLogoutSocket />
       </QueryClientProvider>
     </AppContext.Provider>
   );
