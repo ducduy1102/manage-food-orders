@@ -1,5 +1,5 @@
 "use client";
-import SearchParamsLoader, { useSearchParamsLoader } from "@/components/search-params-loader";
+
 import {
   Select,
   SelectContent,
@@ -32,18 +32,16 @@ export function SwitchLanguageMain() {
   const locale = useLocale();
   const pathname = usePathname();
   const params = useParams();
-  const { searchParams, setSearchParams } = useSearchParamsLoader()
+  const searchParams = useSearchParams();
   const router = useRouter();
 
   return (
-    <>
-    <SearchParamsLoader onParamsReceived={setSearchParams}/>
-        <Select
+    <Select
       value={locale}
       onValueChange={(value: Locale) => {
         const locale = params.locale as Locale;
         const newPathname = pathname.replace(`/${locale}`, `/${value}`);
-        const fullUrl = `${newPathname}?${searchParams?.toString()}`;
+        const fullUrl = `${newPathname}?${searchParams.toString()}`;
         router.replace(fullUrl);
         router.refresh();
       }}
@@ -61,7 +59,5 @@ export function SwitchLanguageMain() {
         </SelectGroup>
       </SelectContent>
     </Select>
-    </>
-
   );
 }
