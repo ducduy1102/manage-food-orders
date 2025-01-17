@@ -3,18 +3,27 @@ import { NextResponse } from "next/server";
 import type { NextRequest } from "next/server";
 import jwt from "jsonwebtoken";
 import { TokenPayload } from "@/types/jwt.types";
+import createMiddleware from "next-intl/middleware";
+import { defaultLocale, locales } from "@/config";
+
 const decodeToken = (token: string) => {
   return jwt.decode(token) as TokenPayload;
 };
 
-const managePaths = ["/manage"];
-const guestPaths = ["/guest"];
-const onlyOwnerPaths = ["/manage/accounts"];
+const managePaths = ["/vi/manage", "/en/manage"];
+const guestPaths = ["/vi/guest", "/en/guest"];
+const onlyOwnerPaths = ["/vi/manage/accounts", "/en/manage/accounts"];
 const privatePaths = [...managePaths, ...guestPaths];
-const unAuthPaths = ["/login"];
+const unAuthPaths = ["/vi/login", "/en/login"];
 
 // This function can be marked `async` if using `await` inside
 export function middleware(request: NextRequest) {
+  const handleI18nRouting = createMiddleware({
+    locales,
+    defaultLocale,
+  });
+  const response = handleI18nRouting(request);
+
   const { pathname } = request.nextUrl;
   const accessToken = request.cookies.get("accessToken")?.value;
   const refreshToken = request.cookies.get("refreshToken")?.value;
@@ -22,14 +31,23 @@ export function middleware(request: NextRequest) {
   if (privatePaths.some((path) => pathname.startsWith(path)) && !refreshToken) {
     const url = new URL("/login", request.url);
     url.searchParams.set("clearTokens", "true");
-    return NextResponse.redirect(url);
+    // return NextResponse.redirect(url);
+
+    response.headers.set("x-middleware-rewrite", url.toString());
+    return response;
   }
 
   // 2. Đã đăng nhập
   if (refreshToken) {
     // 2.1 Nếu cố tình vào trang login, redirect về trang chủ
     if (unAuthPaths.some((path) => pathname.startsWith(path))) {
-      return NextResponse.redirect(new URL("/", request.url));
+      // return NextResponse.redirect(new URL("/", request.url));
+
+      response.headers.set(
+        "x-middleware-rewrite",
+        new URL("/", request.url).toString()
+      );
+      return response;
     }
 
     // 2.2 Đăng nhập rồi nhưng access token lại hết hạn
@@ -40,7 +58,10 @@ export function middleware(request: NextRequest) {
       const url = new URL("/refresh-token", request.url);
       url.searchParams.set("refreshToken", refreshToken);
       url.searchParams.set("redirect", pathname);
-      return NextResponse.redirect(url);
+      // return NextResponse.redirect(url);
+
+      response.headers.set("x-middleware-rewrite", url.toString());
+      return response;
     }
 
     // 2.3 Vào không đúng role, redirect về trang chủ
@@ -62,14 +83,23 @@ export function middleware(request: NextRequest) {
       isNotGuestGoToGuestPath ||
       isNotGuestGoToOwnerPath
     ) {
-      return NextResponse.redirect(new URL("/", request.url));
+      // return NextResponse.redirect(new URL("/", request.url));
+
+      response.headers.set(
+        "x-middleware-rewrite",
+        new URL("/", request.url).toString()
+      );
+      return response;
     }
+    return response;
   }
 
-  return NextResponse.next();
+  // return NextResponse.next();
+  return response;
 }
 
 // See "Matching Paths" below to learn more
 export const config = {
-  matcher: ["/manage/:path*", "/guest/:path*", "/login"],
+  // matcher: ["/manage/:path*", "/guest/:path*", "/login"],
+  matcher: ["/", "/(vi|en)/:path*"],
 };
