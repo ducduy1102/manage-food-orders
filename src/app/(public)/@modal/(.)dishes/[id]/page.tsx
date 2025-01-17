@@ -1,4 +1,5 @@
 import dishApiRequest from "@/apiRequests/dish";
+import Modal from "@/app/(public)/@modal/(.)dishes/[id]/modal";
 import DishDetail from "@/app/(public)/dishes/[id]/dish-detail";
 import { warpServerApi } from "@/lib/utils";
 
@@ -9,12 +10,9 @@ export default async function DishPage({
 }) {
   const data = await warpServerApi(() => dishApiRequest.getDish(Number(id)));
   const dish = data?.payload?.data;
-  if (!dish)
-    return (
-      <h1 className='text-2xl lg:text-3xl font-semibold'>
-        Món ăn không tồn tại
-      </h1>
-    );
-
-  return <DishDetail dish={dish} />;
+  return (
+    <Modal>
+      <DishDetail dish={dish} />
+    </Modal>
+  );
 }

@@ -30,10 +30,6 @@ const menuItems: {
     href: "/", // authRequired = undefined nghĩa là đăng nhập hay chưa đều cho hiển thị
   },
   {
-    title: "Setting",
-    href: "/setting",
-  },
-  {
     title: "Menu",
     href: "/guest/menu",
     role: [Role.Guest],
