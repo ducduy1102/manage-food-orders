@@ -1,5 +1,16 @@
 {
   "HomePage": {
     "title": "Nhà hàng HaNa"
+  },
+  "Login": {
+    "title": "Đăng nhập",
+    "enter_your_email_and_password_to_log_in_to_the_system": "Nhập email và mật khẩu của bạn để đăng nhập vào hệ thống",
+    "password": "Mật khẩu",
+    "sign_in_with_google": "Đăng nhập bằng Google"
+  },
+  "SwitchLanguage": {
+    "title": "Chuyển ngôn ngữ",
+    "en": "Tiếng Anh",
+    "vi": "Tiếng Việt"
   }
 }

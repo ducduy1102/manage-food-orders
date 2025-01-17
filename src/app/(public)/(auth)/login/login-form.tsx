@@ -21,6 +21,7 @@ import { useEffect } from "react";
 import { useAppStore } from "@/components/app-provider";
 import envConfig from "@/config";
 import Link from "next/link";
+import { useTranslations } from "next-intl";
 
 const getOauthGoogleUrl = () => {
   const rootUrl = "https://accounts.google.com/o/oauth2/v2/auth";
@@ -41,6 +42,7 @@ const getOauthGoogleUrl = () => {
 const googleOauthUrl = getOauthGoogleUrl();
 
 export default function LoginForm() {
+  const t = useTranslations("Login");
   const loginMutation = useLoginMutation();
   const searchParams = useSearchParams();
   const clearTokens = searchParams.get("clearTokens");
@@ -81,9 +83,11 @@ export default function LoginForm() {
   return (
     <Card className='max-w-sm mx-auto'>
       <CardHeader>
-        <CardTitle className='text-2xl'>Đăng nhập</CardTitle>
+        <CardTitle className='text-2xl text-center mb-2'>
+          {t("title")}
+        </CardTitle>
         <CardDescription>
-          Nhập email và mật khẩu của bạn để đăng nhập vào hệ thống
+          {t("enter_your_email_and_password_to_log_in_to_the_system")}
         </CardDescription>
       </CardHeader>
       <CardContent>
@@ -122,7 +126,7 @@ export default function LoginForm() {
                   <FormItem>
                     <div className='grid gap-2'>
                       <div className='flex items-center'>
-                        <Label htmlFor='password'>Password</Label>
+                        <Label htmlFor='password'>{t("password")}</Label>
                       </div>
                       <Input
                         id='password'
@@ -136,11 +140,11 @@ export default function LoginForm() {
                 )}
               />
               <Button type='submit' className='w-full'>
-                Đăng nhập
+                {t("title")}
               </Button>
               <Link href={googleOauthUrl}>
                 <Button variant='outline' className='w-full' type='button'>
-                  Đăng nhập bằng Google
+                  {t("sign_in_with_google")}
                 </Button>
               </Link>
             </div>

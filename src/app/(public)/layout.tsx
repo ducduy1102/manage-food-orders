@@ -4,6 +4,7 @@ import { Button } from "@/components/ui/button";
 import { Sheet, SheetContent, SheetTrigger } from "@/components/ui/sheet";
 import DarkModeToggle from "@/components/dark-mode-toggle";
 import NavItems from "@/app/(public)/nav-items";
+import { SwitchLanguage } from "@/components/switch-language";
 
 export default function Layout({
   children,
@@ -13,18 +14,17 @@ export default function Layout({
   modal: React.ReactNode;
 }>) {
   return (
-    <div className='relative flex flex-col w-full min-h-screen'>
-      <header className='sticky top-0 z-20 flex items-center h-16 gap-4 px-4 border-b bg-background md:px-6'>
-        <nav className='flex-col hidden gap-6 text-lg font-medium md:flex md:flex-row md:items-center md:gap-5 md:text-sm lg:gap-6'>
+    <div className='flex min-h-screen w-full flex-col relative'>
+      <header className='sticky z-20 top-0 flex h-16 items-center gap-4 border-b bg-background px-4 md:px-6'>
+        <nav className='hidden flex-col gap-6 text-lg font-medium md:flex md:flex-row md:items-center md:gap-5 md:text-sm lg:gap-6'>
           <Link
             href='#'
             className='flex items-center gap-2 text-lg font-semibold md:text-base'
           >
-            <Package2 className='w-6 h-6' />
+            <Package2 className='h-6 w-6' />
             <span className='sr-only'>HaNa</span>
           </Link>
-          {/* PC */}
-          <NavItems className='flex-shrink-0 transition-colors text-muted-foreground hover:text-foreground' />
+          <NavItems className='text-muted-foreground transition-colors hover:text-foreground flex-shrink-0' />
         </nav>
         <Sheet>
           <SheetTrigger asChild>
@@ -33,7 +33,7 @@ export default function Layout({
               size='icon'
               className='shrink-0 md:hidden'
             >
-              <Menu className='w-5 h-5' />
+              <Menu className='h-5 w-5' />
               <span className='sr-only'>Toggle navigation menu</span>
             </Button>
           </SheetTrigger>
@@ -43,19 +43,20 @@ export default function Layout({
                 href='#'
                 className='flex items-center gap-2 text-lg font-semibold'
               >
-                <Package2 className='w-6 h-6' />
+                <Package2 className='h-6 w-6' />
                 <span className='sr-only'>HaNa</span>
               </Link>
-              {/* Mobile */}
-              <NavItems className='transition-colors text-muted-foreground hover:text-foreground' />
+
+              <NavItems className='text-muted-foreground transition-colors hover:text-foreground' />
             </nav>
           </SheetContent>
         </Sheet>
-        <div className='ml-auto'>
+        <div className='ml-auto flex items-center gap-4'>
+          <SwitchLanguage />
           <DarkModeToggle />
         </div>
       </header>
-      <main className='flex flex-col flex-1 gap-4 p-4 md:gap-8 md:p-8'>
+      <main className='flex flex-1 flex-col gap-4 p-4 md:gap-8 md:p-8'>
         {children}
         {modal}
       </main>

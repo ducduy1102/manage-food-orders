@@ -1,5 +1,16 @@
 {
   "HomePage": {
     "title": "HaNa Restaurant"
+  },
+  "Login": {
+    "title": "Login",
+    "enter_your_email_and_password_to_log_in_to_the_system": "Enter your email and password to log in to the system",
+    "password": "Password",
+    "sign_in_with_google": "Sign in with Google"
+  },
+  "SwitchLanguage": {
+    "title": "Switch language",
+    "en": "English",
+    "vi": "Vietnamese"
   }
 }
