@@ -1,10 +1,11 @@
 "use client";
 
+import { useRouter } from "@/i18n/routing";
 import {
   checkAndRefreshToken,
   getRefreshTokenFromLocalStorage,
 } from "@/lib/utils";
-import { useRouter, useSearchParams } from "next/navigation";
+import { useSearchParams } from "next/navigation";
 import React, { Suspense, useEffect } from "react";
 
 function RefreshToken() {

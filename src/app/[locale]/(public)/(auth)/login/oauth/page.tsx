@@ -1,9 +1,10 @@
 "use client";
 import { useAppStore } from "@/components/app-provider";
 import { toast } from "@/components/ui/use-toast";
+import { useRouter } from "@/i18n/routing";
 import { decodeToken, generateSocketInstace } from "@/lib/utils";
 import { useSetTokenToCookieMutation } from "@/queries/useAuth";
-import { useRouter, useSearchParams } from "next/navigation";
+import { useSearchParams } from "next/navigation";
 import { useEffect, useRef } from "react";
 export default function OAuthPage() {
   const { mutateAsync } = useSetTokenToCookieMutation();

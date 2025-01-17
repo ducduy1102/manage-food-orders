@@ -1,8 +1,9 @@
 "use client";
 
 import { useAppStore } from "@/components/app-provider";
+import { usePathname, useRouter } from "@/i18n/routing";
 import { checkAndRefreshToken } from "@/lib/utils";
-import { usePathname, useRouter } from "next/navigation";
+
 import { useEffect } from "react";
 
 // Những page sau sẽ không check refesh token

@@ -1,4 +1,3 @@
-import Link from "next/link";
 import * as React from "react";
 import {
   ChevronLeftIcon,
@@ -8,11 +7,12 @@ import {
 
 import { cn } from "@/lib/utils";
 import { ButtonProps, buttonVariants } from "@/components/ui/button";
+import { Link } from "@/i18n/routing";
 
 const Pagination = ({ className, ...props }: React.ComponentProps<"nav">) => (
   <nav
-    role="navigation"
-    aria-label="pagination"
+    role='navigation'
+    aria-label='pagination'
     className={cn("mx-auto flex w-full justify-center", className)}
     {...props}
   />
@@ -69,12 +69,12 @@ const PaginationPrevious = ({
   ...props
 }: React.ComponentProps<typeof PaginationLink>) => (
   <PaginationLink
-    aria-label="Go to previous page"
-    size="default"
+    aria-label='Go to previous page'
+    size='default'
     className={cn("gap-1 pl-2.5", className)}
     {...props}
   >
-    <ChevronLeftIcon className="w-4 h-4" />
+    <ChevronLeftIcon className='w-4 h-4' />
     <span>Previous</span>
   </PaginationLink>
 );
@@ -85,13 +85,13 @@ const PaginationNext = ({
   ...props
 }: React.ComponentProps<typeof PaginationLink>) => (
   <PaginationLink
-    aria-label="Go to next page"
-    size="default"
+    aria-label='Go to next page'
+    size='default'
     className={cn("gap-1 pr-2.5", className)}
     {...props}
   >
     <span>Next</span>
-    <ChevronRightIcon className="w-4 h-4" />
+    <ChevronRightIcon className='w-4 h-4' />
   </PaginationLink>
 );
 PaginationNext.displayName = "PaginationNext";
@@ -105,8 +105,8 @@ const PaginationEllipsis = ({
     className={cn("flex h-9 w-9 items-center justify-center", className)}
     {...props}
   >
-    <DotsHorizontalIcon className="w-4 h-4" />
-    <span className="sr-only">More pages</span>
+    <DotsHorizontalIcon className='w-4 h-4' />
+    <span className='sr-only'>More pages</span>
   </span>
 );
 PaginationEllipsis.displayName = "PaginationEllipsis";

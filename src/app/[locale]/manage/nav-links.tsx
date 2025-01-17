@@ -7,10 +7,9 @@ import {
   TooltipTrigger,
   TooltipProvider,
 } from "@/components/ui/tooltip";
+import { Link, usePathname } from "@/i18n/routing";
 import { cn } from "@/lib/utils";
 import { Package2, Settings } from "lucide-react";
-import Link from "next/link";
-import { usePathname } from "next/navigation";
 
 // Dành cho desktop
 export default function NavLinks() {
@@ -22,7 +21,7 @@ export default function NavLinks() {
       <aside className='fixed inset-y-0 left-0 z-10 flex-col hidden border-r w-14 bg-background sm:flex'>
         <nav className='flex flex-col items-center gap-4 px-2 py-4'>
           <Link
-            href='#'
+            href='/'
             className='flex items-center justify-center gap-2 text-lg font-semibold rounded-full group h-9 w-9 shrink-0 bg-primary text-primary-foreground md:h-8 md:w-8 md:text-base'
           >
             <Package2 className='w-4 h-4 transition-all group-hover:scale-110' />

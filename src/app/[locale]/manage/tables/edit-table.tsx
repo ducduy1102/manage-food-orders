@@ -36,11 +36,11 @@ import {
 } from "@/schemaValidations/table.schema";
 import { TableStatus, TableStatusValues } from "@/constants/type";
 import { Switch } from "@/components/ui/switch";
-import Link from "next/link";
 import { useEffect } from "react";
 import { useGetTable, useUpdateTableMutation } from "@/queries/useTable";
 import { toast } from "@/components/ui/use-toast";
 import QRCodeTable from "@/components/qrcode-table";
+import { Link } from "@/i18n/routing";
 
 export default function EditTable({
   id,
@@ -105,7 +105,7 @@ export default function EditTable({
       }}
     >
       <DialogContent
-        className="sm:max-w-[600px] max-h-screen overflow-auto"
+        className='sm:max-w-[600px] max-h-screen overflow-auto'
         onCloseAutoFocus={() => {
           form.reset();
           setId(undefined);
@@ -117,19 +117,19 @@ export default function EditTable({
         <Form {...form}>
           <form
             noValidate
-            className="grid items-start gap-4 auto-rows-max md:gap-8"
-            id="edit-table-form"
+            className='grid items-start gap-4 auto-rows-max md:gap-8'
+            id='edit-table-form'
             onSubmit={form.handleSubmit(onSubmit, console.log)}
           >
-            <div className="grid gap-4 py-4">
+            <div className='grid gap-4 py-4'>
               <FormItem>
-                <div className="grid items-center grid-cols-4 gap-4 justify-items-start">
-                  <Label htmlFor="name">Số hiệu bàn</Label>
-                  <div className="w-full col-span-3 space-y-2">
+                <div className='grid items-center grid-cols-4 gap-4 justify-items-start'>
+                  <Label htmlFor='name'>Số hiệu bàn</Label>
+                  <div className='w-full col-span-3 space-y-2'>
                     <Input
-                      id="number"
-                      type="number"
-                      className="w-full"
+                      id='number'
+                      type='number'
+                      className='w-full'
                       value={data?.payload.data.number ?? 0}
                       readOnly
                     />
@@ -139,17 +139,17 @@ export default function EditTable({
               </FormItem>
               <FormField
                 control={form.control}
-                name="capacity"
+                name='capacity'
                 render={({ field }) => (
                   <FormItem>
-                    <div className="grid items-center grid-cols-4 gap-4 justify-items-start">
-                      <Label htmlFor="price">Sức chứa (người)</Label>
-                      <div className="w-full col-span-3 space-y-2">
+                    <div className='grid items-center grid-cols-4 gap-4 justify-items-start'>
+                      <Label htmlFor='price'>Sức chứa (người)</Label>
+                      <div className='w-full col-span-3 space-y-2'>
                         <Input
-                          id="capacity"
-                          className="w-full"
+                          id='capacity'
+                          className='w-full'
                           {...field}
-                          type="number"
+                          type='number'
                         />
                         <FormMessage />
                       </div>
@@ -159,19 +159,19 @@ export default function EditTable({
               />
               <FormField
                 control={form.control}
-                name="status"
+                name='status'
                 render={({ field }) => (
                   <FormItem>
-                    <div className="grid items-center grid-cols-4 gap-4 justify-items-start">
-                      <Label htmlFor="description">Trạng thái</Label>
-                      <div className="w-full col-span-3 space-y-2">
+                    <div className='grid items-center grid-cols-4 gap-4 justify-items-start'>
+                      <Label htmlFor='description'>Trạng thái</Label>
+                      <div className='w-full col-span-3 space-y-2'>
                         <Select
                           onValueChange={field.onChange}
                           defaultValue={field.value}
                         >
                           <FormControl>
                             <SelectTrigger>
-                              <SelectValue placeholder="Chọn trạng thái" />
+                              <SelectValue placeholder='Chọn trạng thái' />
                             </SelectTrigger>
                           </FormControl>
                           <SelectContent>
@@ -190,15 +190,15 @@ export default function EditTable({
               />
               <FormField
                 control={form.control}
-                name="changeToken"
+                name='changeToken'
                 render={({ field }) => (
                   <FormItem>
-                    <div className="grid items-center grid-cols-4 gap-4 justify-items-start">
-                      <Label htmlFor="price">Đổi QR Code</Label>
-                      <div className="w-full col-span-3 space-y-2">
-                        <div className="flex items-center space-x-2">
+                    <div className='grid items-center grid-cols-4 gap-4 justify-items-start'>
+                      <Label htmlFor='price'>Đổi QR Code</Label>
+                      <div className='w-full col-span-3 space-y-2'>
+                        <div className='flex items-center space-x-2'>
                           <Switch
-                            id="changeToken"
+                            id='changeToken'
                             checked={field.value}
                             onCheckedChange={field.onChange}
                           />
@@ -211,9 +211,9 @@ export default function EditTable({
                 )}
               />
               <FormItem>
-                <div className="grid items-center grid-cols-4 gap-4 justify-items-start">
+                <div className='grid items-center grid-cols-4 gap-4 justify-items-start'>
                   <Label>QR Code</Label>
-                  <div className="w-full col-span-3 space-y-2">
+                  <div className='w-full col-span-3 space-y-2'>
                     {data && (
                       <QRCodeTable
                         token={data.payload.data.token}
@@ -224,17 +224,17 @@ export default function EditTable({
                 </div>
               </FormItem>
               <FormItem>
-                <div className="grid items-center grid-cols-4 gap-4 justify-items-start">
+                <div className='grid items-center grid-cols-4 gap-4 justify-items-start'>
                   <Label>URL gọi món</Label>
-                  <div className="w-full col-span-3 space-y-2">
+                  <div className='w-full col-span-3 space-y-2'>
                     {data && (
                       <Link
                         href={getTableLink({
                           token: data.payload.data.token,
                           tableNumber: data.payload.data.number,
                         })}
-                        target="_blank"
-                        className="break-all"
+                        target='_blank'
+                        className='break-all'
                       >
                         {getTableLink({
                           token: data.payload.data.token,
@@ -249,7 +249,7 @@ export default function EditTable({
           </form>
         </Form>
         <DialogFooter>
-          <Button type="submit" form="edit-table-form">
+          <Button type='submit' form='edit-table-form'>
             Lưu
           </Button>
         </DialogFooter>

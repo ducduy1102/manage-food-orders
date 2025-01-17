@@ -1,4 +1,5 @@
 import envConfig from "@/config";
+import { redirect } from "@/i18n/routing";
 import {
   getAccessTokenFromLocalStorage,
   normalizePath,
@@ -7,7 +8,6 @@ import {
   setRefreshTokenToLocalStorage,
 } from "@/lib/utils";
 import { LoginResType } from "@/schemaValidations/auth.schema";
-import { redirect } from "next/navigation";
 
 type CustomOptions = Omit<RequestInit, "method"> & {
   baseUrl?: string | undefined;
