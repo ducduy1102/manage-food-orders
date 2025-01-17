@@ -6,7 +6,8 @@ import { Toaster } from "@/components/ui/toaster";
 import { ThemeProvider } from "@/components/theme-provider";
 import AppProvider from "@/components/app-provider";
 import { NextIntlClientProvider } from "next-intl";
-import { getMessages } from "next-intl/server";
+import { getMessages, setRequestLocale } from "next-intl/server";
+import { routing } from "@/i18n/routing";
 
 const fontSans = FontSans({
   subsets: ["latin"],
@@ -17,6 +18,10 @@ export const metadata: Metadata = {
   description: "The best restaurant in the world",
 };
 
+export function generateStaticParams() {
+  return routing.locales.map((locale) => ({ locale }));
+}
+
 export default async function RootLayout({
   children,
   params: { locale },
@@ -24,6 +29,7 @@ export default async function RootLayout({
   children: React.ReactNode;
   params: { locale: string };
 }>) {
+  setRequestLocale(locale);
   // Ensure that the incoming `locale` is valid
   const messages = await getMessages();
   return (

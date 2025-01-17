@@ -21,7 +21,9 @@ import { useAppStore } from "@/components/app-provider";
 import envConfig from "@/config";
 import { useTranslations } from "next-intl";
 import { Link, useRouter } from "@/i18n/routing";
-import { useSearchParams } from "next/navigation";
+import SearchParamsLoader, {
+  useSearchParamsLoader,
+} from "@/components/search-params-loader";
 
 const getOauthGoogleUrl = () => {
   const rootUrl = "https://accounts.google.com/o/oauth2/v2/auth";
@@ -44,8 +46,8 @@ const googleOauthUrl = getOauthGoogleUrl();
 export default function LoginForm() {
   const t = useTranslations("Login");
   const loginMutation = useLoginMutation();
-  const searchParams = useSearchParams();
-  const clearTokens = searchParams.get("clearTokens");
+  const { searchParams, setSearchParams } = useSearchParamsLoader();
+  const clearTokens = searchParams?.get("clearTokens");
   const setRole = useAppStore((state) => state.setRole);
   const setSocket = useAppStore((state) => state.setSocket);
 
@@ -82,6 +84,7 @@ export default function LoginForm() {
 
   return (
     <Card className='max-w-sm mx-auto'>
+      <SearchParamsLoader onParamsReceived={setSearchParams} />
       <CardHeader>
         <CardTitle className='text-2xl text-center mb-2'>
           {t("title")}

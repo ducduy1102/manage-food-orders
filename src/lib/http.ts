@@ -152,7 +152,14 @@ const request = async <Response>(
         const accessToken = (options?.headers as any)?.Authorization.split(
           "Bearer "
         )[1];
-        redirect(`/logout?accessToken=${accessToken}`);
+        // const params = useParams();
+        // redirect(`/logout?accessToken=${accessToken}`);
+        redirect({
+          href: {
+            pathname: `/logout?accessToken=${accessToken}`,
+          },
+          locale: "vi",
+        });
       }
     } else {
       throw new HttpError(data);
