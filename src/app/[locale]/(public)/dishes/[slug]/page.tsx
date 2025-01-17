@@ -1,12 +1,14 @@
 import dishApiRequest from "@/apiRequests/dish";
-import DishDetail from "@/app/[locale]/(public)/dishes/[id]/dish-detail";
-import { warpServerApi } from "@/lib/utils";
+import DishDetail from "@/app/[locale]/(public)/dishes/[slug]/dish-detail";
+import { getIdFromSlugUrl, warpServerApi } from "@/lib/utils";
 
 export default async function DishPage({
-  params: { id },
+  params: { slug },
 }: {
-  params: { id: string };
+  params: { slug: string };
 }) {
+  const id = getIdFromSlugUrl(slug);
+
   const data = await warpServerApi(() => dishApiRequest.getDish(Number(id)));
   const dish = data?.payload?.data;
   if (!dish)
