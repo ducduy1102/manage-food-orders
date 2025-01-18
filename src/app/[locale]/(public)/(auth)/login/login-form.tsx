@@ -46,6 +46,7 @@ const googleOauthUrl = getOauthGoogleUrl();
 export default function LoginForm() {
   const t = useTranslations("Login");
   const loginMutation = useLoginMutation();
+  const errorMessageT = useTranslations("ErrorMessage");
   const { searchParams, setSearchParams } = useSearchParamsLoader();
   const clearTokens = searchParams?.get("clearTokens");
   const setRole = useAppStore((state) => state.setRole);
@@ -89,9 +90,7 @@ export default function LoginForm() {
         <CardTitle className='text-2xl text-center mb-2'>
           {t("title")}
         </CardTitle>
-        <CardDescription>
-          {t("enter_your_email_and_password_to_log_in_to_the_system")}
-        </CardDescription>
+        <CardDescription>{t("cardDescription")}</CardDescription>
       </CardHeader>
       <CardContent>
         <Form {...form}>
@@ -106,7 +105,7 @@ export default function LoginForm() {
               <FormField
                 control={form.control}
                 name='email'
-                render={({ field }) => (
+                render={({ field, formState: { errors } }) => (
                   <FormItem>
                     <div className='grid gap-2'>
                       <Label htmlFor='email'>Email</Label>
@@ -117,7 +116,10 @@ export default function LoginForm() {
                         required
                         {...field}
                       />
-                      <FormMessage />
+                      <FormMessage>
+                        {Boolean(errors.email?.message) &&
+                          errorMessageT(errors.email?.message as any)}
+                      </FormMessage>
                     </div>
                   </FormItem>
                 )}
@@ -125,7 +127,7 @@ export default function LoginForm() {
               <FormField
                 control={form.control}
                 name='password'
-                render={({ field }) => (
+                render={({ field, formState: { errors } }) => (
                   <FormItem>
                     <div className='grid gap-2'>
                       <div className='flex items-center'>
@@ -137,17 +139,20 @@ export default function LoginForm() {
                         required
                         {...field}
                       />
-                      <FormMessage />
+                      <FormMessage>
+                        {Boolean(errors.password?.message) &&
+                          errorMessageT(errors.password?.message as any)}
+                      </FormMessage>
                     </div>
                   </FormItem>
                 )}
               />
               <Button type='submit' className='w-full'>
-                {t("title")}
+                {t("buttonLogin")}
               </Button>
               <Link href={googleOauthUrl}>
                 <Button variant='outline' className='w-full' type='button'>
-                  {t("sign_in_with_google")}
+                  {t("loginWithGoogle")}
                 </Button>
               </Link>
             </div>

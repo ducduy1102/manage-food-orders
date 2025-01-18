@@ -12,7 +12,7 @@ export default async function Home({
 }) {
   setRequestLocale(locale);
 
-  const t = await getTranslations("HomePage");
+  const t = await getTranslations();
   let dishList: DishListResType["data"] = [];
   try {
     const result = await dishApiRequest.list();
@@ -37,15 +37,15 @@ export default async function Home({
         />
         <div className='relative z-20 px-4 py-10 md:py-20 sm:px-10 md:px-20'>
           <h1 className='text-xl font-bold text-center sm:text-2xl md:text-4xl lg:text-5xl'>
-            {t("title")}
+            {t("Brand.title")}
           </h1>
           <p className='mt-4 text-sm text-center sm:text-base'>
-            Vị ngon, trọn khoảnh khắc
+            {t("HomePage.slogan")}
           </p>
         </div>
       </section>
       <section className='py-16 space-y-10'>
-        <h2 className='text-2xl font-bold text-center'>Đa dạng các món ăn</h2>
+        <h2 className='text-2xl font-bold text-center'> {t("HomePage.h2")}</h2>
         <div className='grid grid-cols-1 gap-10 sm:grid-cols-2'>
           {dishList.map((dish) => (
             <Link
