@@ -74,5 +74,66 @@
       "logoutCancel": "Cancel",
       "logoutConfirm": "Signing out may result in loss of your orders"
     }
+  },
+  "Footer": {
+    "brand": "HaNa Restaurant",
+    "term": "Term of service",
+    "privacyPolicy": "Privacy policy",
+    "aboutUs": "About us"
+  },
+  "Term": {
+    "name": "Terms of service",
+    "introduce": "Introduce",
+    "desc": " Welcome to our Terms of Service page. By using our services, you agree to comply with the terms and conditions below.",
+    "useOfService": {
+      "title": "Use of Services",
+      "desc": " You agree to use our services only for lawful purposes and in a manner that does not violate any laws. You may not use our services to distribute content that is illegal, harmful, or violates the privacy of others."
+    },
+    "intellectualPropertyRights": {
+      "title": "Intellectual Property Rights",
+      "desc": "All content and materials on our website, including text, images, graphics, logos, and software, are owned by us or our licensors and are protected by intellectual property laws."
+    },
+    "changesToTerms": {
+      "title": "Changes to Terms",
+      "desc": "We reserve the right to change these terms of service at any time without notice. Your continued use of the service following the posting of changes will be deemed your acceptance of those changes."
+    },
+    "contact": {
+      "title": "Contact",
+      "desc": " If you have any questions about these terms of service, please contact us via email or phone number provided on our website."
+    }
+  },
+  "PrivacyPolicy": {
+    "name": "Privacy policy",
+    "dataCollected": {
+      "title": "Data collected",
+      "desc": "We collect the personal information you provide when you create an account, place an order, or contact us. This information may include your name. We also collect certain information automatically when you visit our website, such as your IP address and browser type."
+    },
+    "purpose": {
+      "title": "Purpose of use",
+      "content": {
+        "introduce": "We use your personal information for the following purposes:",
+        "firstPurpose": "To process your order: We use your contact and payment information to confirm and process your order, as well as to send invoices and shipping information.",
+        "secondPurpose": "To provide customer service: We use your contact information to answer questions, resolve problems, and provide technical support.",
+        "thirdPurpose": "To send marketing communications: With your consent, we may use your email address to send you information about new products, services, promotions, and special events.",
+        "fourthPurpose": "To improve our services: We use aggregated and anonymous data to analyze trends and improve our services."
+      }
+    }
+  },
+  "About": {
+    "name": "About us",
+    "title": "About HaNa restaurant",
+    "address": "Address: 290 No Trang Long, Ward 12, Binh Thanh District, Ho Chi Minh City",
+    "ourStory": {
+      "title": "My story",
+      "desc": "HaNa was founded in 2020 with a simple mission: to serve delicious, high-quality food that brings people together. Our passion for exceptional ingredients and innovative recipes has made us a beloved local institution, known for our commitment to creating meals that nourish the body and soul."
+    },
+    "ourValue": {
+      "title": "Our values",
+      "desc": "At the heart of HaNa is a deep dedication to sustainability, community and culinary excellence. We source our ingredients from local farmers and producers, ensuring freshness and supporting the local economy. Our team is passionate about creating dishes that not only please the taste buds but nourish the body, with a focus on whole, unprocessed foods."
+    },
+    "ourCommitment": {
+      "title": "Our commitment",
+      "desc": "We believe that good food has the power to bring people together and create lasting memories. That's why we're committed to providing a great dining experience, from the moment you walk through the door to the last bite of your meal. Our talented chefs work tirelessly to create dishes that best showcase our seasonal, locally sourced ingredients, ensuring that every plate is a celebration of flavor and quality."
+    }
   }
 }

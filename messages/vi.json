@@ -74,5 +74,66 @@
       "logoutCancel": "Hủy",
       "logoutConfirm": "Đăng xuất có thể dẫn đến mất dữ liệu đơn hàng của bạn"
     }
+  },
+  "Footer": {
+    "brand": "Nhà hàng HaNa",
+    "term": "Điều khoản dịch vụ",
+    "privacyPolicy": "Chính sách bảo mật",
+    "aboutUs": "Về chúng tôi"
+  },
+  "Term": {
+    "name": "Điều khoản dịch vụ",
+    "introduce": "Giới thiệu",
+    "desc": " Chào mừng bạn đến với trang Điều khoản dịch vụ của chúng tôi. Khi sử dụng dịch vụ của chúng tôi, bạn đồng ý tuân thủ các điều khoản và điều kiện dưới đây.",
+    "useOfService": {
+      "title": "Sử dụng dịch vụ",
+      "desc": " Bạn đồng ý sử dụng dịch vụ của chúng tôi chỉ cho các mục đích hợp pháp và không vi phạm bất kỳ luật lệ nào. Bạn không được sử dụng dịch vụ của chúng tôi để phát tán nội dung bất hợp pháp, gây hại hoặc vi phạm quyền riêng tư của người khác."
+    },
+    "intellectualPropertyRights": {
+      "title": "Quyền sở hữu trí tuệ",
+      "desc": "Tất cả nội dung và tài liệu trên trang web của chúng tôi, bao gồm văn bản, hình ảnh, đồ họa, logo, và phần mềm, đều thuộc quyền sở hữu của chúng tôi hoặc các bên cấp phép của chúng tôi và được bảo vệ bởi luật sở hữu trí tuệ."
+    },
+    "changesToTerms": {
+      "title": "Thay đổi điều khoản",
+      "desc": " Chúng tôi có quyền thay đổi các điều khoản dịch vụ này bất kỳ lúc nào mà không cần thông báo trước. Việc tiếp tục sử dụng dịch vụ của bạn sau khi các thay đổi được đăng tải sẽ được coi là sự chấp nhận của bạn đối với các thay đổi đó."
+    },
+    "contact": {
+      "title": "Liên hệ",
+      "desc": " Nếu bạn có bất kỳ câu hỏi nào về các điều khoản dịch vụ này, vui lòng liên hệ với chúng tôi qua email hoặc số điện thoại được cung cấp trên trang web của chúng tôi."
+    }
+  },
+  "PrivacyPolicy": {
+    "name": "Chính sách bảo mật",
+    "dataCollected": {
+      "title": "Dữ liệu thu thập",
+      "desc": "Chúng tôi thu thập các thông tin cá nhân mà bạn cung cấp khi tạo tài khoản, đặt hàng hoặc liên hệ với chúng tôi. Các thông tin này có thể bao gồm tên. Ngoài ra, chúng tôi cũng thu thập một số thông tin tự động khi bạn truy cập trang web của chúng tôi, như địa chỉ IP và loại trình duyệt."
+    },
+    "purpose": {
+      "title": "Mục đích sử dụng",
+      "content": {
+        "introduce": "Chúng tôi sử dụng thông tin cá nhân của bạn với các mục đích sau:",
+        "firstPurpose": "Để xử lý đơn hàng của bạn: Chúng tôi sử dụng thông tin liên hệ và thanh toán của bạn để xác nhận và xử lý đơn hàng, cũng như để gửi hóa đơn và thông tin giao hàng.",
+        "secondPurpose": "Để cung cấp dịch vụ khách hàng: Chúng tôi sử dụng thông tin liên hệ của bạn để trả lời các câu hỏi, giải quyết các vấn đề và cung cấp hỗ trợ kỹ thuật.",
+        "thirdPurpose": "Để gửi các thông tin tiếp thị: Với sự đồng ý của bạn, chúng tôi có thể sử dụng địa chỉ email của bạn để gửi các thông tin về các sản phẩm, dịch vụ mới, khuyến mãi và sự kiện đặc biệt.",
+        "fourthPurpose": "Để cải thiện dịch vụ của chúng tôi: Chúng tôi sử dụng dữ liệu tổng hợp và ẩn danh để phân tích xu hướng và cải thiện dịch vụ của chúng tôi."
+      }
+    }
+  },
+  "About": {
+    "name": "Về chúng tôi",
+    "title": "Về nhà hàng Big Boy",
+    "address": "Địa chỉ: 290 Nơ Trang Long, Phường 12, Quận Bình Thạnh, Thành phố Hồ Chí Minh",
+    "ourStory": {
+      "title": "Câu chuyện của chúng tôi",
+      "desc": "HaNa được thành lập vào năm 2020 với một sứ mệnh đơn giản: phục vụ món ăn ngon, chất lượng cao để gắn kết mọi người lại với nhau.                                                 Niềm đam mê của chúng tôi đối với nguyên liệu đặc biệt và công thức sáng tạo đã đưa chúng tôi trở thành một tổ chức địa phương được yêu thích, nổi tiếng với cam kết tạo ra những bữa ăn nuôi dưỡng cơ thể và tâm hồn."
+    },
+    "ourValue": {
+      "title": "Giá trị của chúng tôi",
+      "desc": "Tại trung tâm của Big Boy là sự cống hiến sâu sắc cho tính bền vững, cộng đồng và sự xuất sắc trong ẩm thực. Chúng tôi lấy nguyên liệu từ các nông dân và nhà sản xuất địa phương, đảm bảo sự tươi mới và hỗ trợ nền kinh tế địa phương. Đội ngũ của chúng tôi đam mê tạo ra những món ăn không chỉ làm hài lòng vị giác mà còn nuôi dưỡng cơ thể, với sự tập trung vào thực phẩm lành mạnh, không qua chế biến."
+    },
+    "ourCommitment": {
+      "title": "Cam kết của chúng tôi",
+      "desc": "Chúng tôi tin rằng món ăn ngon có sức mạnh gắn kết mọi người lại với nhau và tạo ra những kỷ niệm lâu dài. Đó là lý do tại sao chúng tôi cam kết cung cấp một trải nghiệm ẩm thực tuyệt vời, từ lúc bạn bước qua cửa cho đến miếng cuối cùng của bữa ăn. Các đầu bếp tài năng của chúng tôi làm việc không ngừng để tạo ra những món ăn thể hiện tốt nhất các nguyên liệu theo mùa, được lấy từ địa phương, đảm bảo rằng mỗi đĩa ăn là một lễ kỷ niệm của hương vị và chất lượng."
+    }
   }
 }
