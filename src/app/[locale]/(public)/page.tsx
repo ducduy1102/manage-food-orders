@@ -1,6 +1,10 @@
 import dishApiRequest from "@/apiRequests/dish";
 import { Link } from "@/i18n/routing";
-import { formatCurrency, generateSlugUrl } from "@/lib/utils";
+import {
+  formatCurrency,
+  generateSlugUrl,
+  htmlToTextForDescription,
+} from "@/lib/utils";
 import { DishListResType } from "@/schemaValidations/dish.schema";
 import { getTranslations, setRequestLocale } from "next-intl/server";
 import Image from "next/image";
@@ -13,7 +17,7 @@ export async function generateMetadata({
   const t = await getTranslations({ locale, namespace: "HomePage" });
   return {
     title: t("title"),
-    description: t("description"),
+    description: htmlToTextForDescription(t("description")),
   };
 }
 
