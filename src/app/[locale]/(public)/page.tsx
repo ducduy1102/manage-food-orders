@@ -4,6 +4,18 @@ import { formatCurrency, generateSlugUrl } from "@/lib/utils";
 import { DishListResType } from "@/schemaValidations/dish.schema";
 import { getTranslations, setRequestLocale } from "next-intl/server";
 import Image from "next/image";
+import { Locale } from "@/config";
+export async function generateMetadata({
+  params: { locale },
+}: {
+  params: { locale: Locale };
+}) {
+  const t = await getTranslations({ locale, namespace: "HomePage" });
+  return {
+    title: t("title"),
+    description: t("description"),
+  };
+}
 
 export default async function Home({
   params: { locale },

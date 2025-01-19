@@ -224,7 +224,7 @@ export const OrderStatusIcon = {
   [OrderStatus.Paid]: HandCoins,
 };
 
-export const warpServerApi = async <T>(fn: () => Promise<T>) => {
+export const wrapServerApi = async <T>(fn: () => Promise<T>) => {
   let result = null;
   try {
     result = await fn();

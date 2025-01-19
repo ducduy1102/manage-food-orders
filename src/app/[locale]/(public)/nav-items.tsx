@@ -1,5 +1,4 @@
 "use client";
-
 import { useAppStore } from "@/components/app-provider";
 import { Role } from "@/constants/type";
 import { cn, handleErrorApi } from "@/lib/utils";
@@ -16,6 +15,7 @@ import {
   AlertDialogTitle,
   AlertDialogTrigger,
 } from "@/components/ui/alert-dialog";
+import { useTranslations } from "next-intl";
 import { Link, useRouter } from "@/i18n/routing";
 
 const menuItems: {
@@ -25,26 +25,26 @@ const menuItems: {
   hideWhenLogin?: boolean;
 }[] = [
   {
-    title: "Trang chủ",
-    href: "/", // authRequired = undefined nghĩa là đăng nhập hay chưa đều cho hiển thị
+    title: "home",
+    href: "/",
   },
   {
-    title: "Menu",
+    title: "menu",
     href: "/guest/menu",
     role: [Role.Guest],
   },
   {
-    title: "Đơn hàng",
+    title: "orders",
     href: "/guest/orders",
     role: [Role.Guest],
   },
   {
-    title: "Đăng nhập",
+    title: "login",
     href: "/login",
     hideWhenLogin: true,
   },
   {
-    title: "Quản lý",
+    title: "manage",
     href: "/manage/dashboard",
     role: [Role.Owner, Role.Employee],
   },
@@ -55,12 +55,12 @@ const menuItems: {
 // Nhưng ngay sau đó thì client render ra là Món ăn, Đơn hàng, Quản lý do đã check được trạng thái đăng nhập
 
 export default function NavItems({ className }: { className?: string }) {
+  const t = useTranslations("NavItem");
   const role = useAppStore((state) => state.role);
   const setRole = useAppStore((state) => state.setRole);
   const disconnectSocket = useAppStore((state) => state.disconnectSocket);
   const logoutMutation = useLogoutMutation();
   const router = useRouter();
-
   const logout = async () => {
     if (logoutMutation.isPending) return;
     try {
@@ -77,17 +77,16 @@ export default function NavItems({ className }: { className?: string }) {
   return (
     <>
       {menuItems.map((item) => {
-        // Đăng nhập chỉ hiển thị menu đăng nhập
+        // Trường hợp đăng nhập thì chỉ hiển thị menu đăng nhập
         const isAuth = item.role && role && item.role.includes(role);
-
-        // Menu item có thể hiển thị kể cả chưa đăng nhập
+        // Trường hợp menu item có thể hiển thị dù cho đã đăng nhập hay chưa
         const canShow =
           (item.role === undefined && !item.hideWhenLogin) ||
           (!role && item.hideWhenLogin);
         if (isAuth || canShow) {
           return (
             <Link href={item.href} key={item.href} className={className}>
-              {item.title}
+              {t(item.title as any)}
             </Link>
           );
         }
@@ -96,17 +95,21 @@ export default function NavItems({ className }: { className?: string }) {
       {role && (
         <AlertDialog>
           <AlertDialogTrigger asChild>
-            <div className={cn(className, "cursor-pointer")}>Đăng xuất</div>
+            <div className={cn(className, "cursor-pointer")}>{t("logout")}</div>
           </AlertDialogTrigger>
           <AlertDialogContent>
             <AlertDialogHeader>
-              <AlertDialogTitle>Bạn có muốn đăng xuất không?</AlertDialogTitle>
+              <AlertDialogTitle>
+                {t("logoutDialog.logoutQuestion")}
+              </AlertDialogTitle>
               <AlertDialogDescription>
-                Việc đăng xuất có thể làm mất đi hóa đơn của bạn.
+                {t("logoutDialog.logoutConfirm")}
               </AlertDialogDescription>
             </AlertDialogHeader>
             <AlertDialogFooter>
-              <AlertDialogCancel>Thoát</AlertDialogCancel>
+              <AlertDialogCancel>
+                {t("logoutDialog.logoutCancel")}
+              </AlertDialogCancel>
               <AlertDialogAction onClick={logout}>OK</AlertDialogAction>
             </AlertDialogFooter>
           </AlertDialogContent>

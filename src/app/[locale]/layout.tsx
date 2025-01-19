@@ -31,8 +31,10 @@ export async function generateMetadata({
 }) {
   const t = await getTranslations({ locale, namespace: "Brand" });
   return {
-    title: t("title"),
-    description: "The best restaurant in the world",
+    title: {
+      template: `%s | ${t("title")}`,
+      default: t("defaultTitle"),
+    },
   };
 }
 

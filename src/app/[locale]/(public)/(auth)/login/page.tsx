@@ -1,6 +1,18 @@
 import LoginForm from "@/app/[locale]/(public)/(auth)/login/login-form";
 import { Suspense } from "react";
-import { setRequestLocale } from "next-intl/server";
+import { setRequestLocale, getTranslations } from "next-intl/server";
+import { Locale } from "@/config";
+export async function generateMetadata({
+  params: { locale },
+}: {
+  params: { locale: Locale };
+}) {
+  const t = await getTranslations({ locale, namespace: "Login" });
+  return {
+    title: t("title"),
+    description: t("description"),
+  };
+}
 
 export default function Login({
   params: { locale },
