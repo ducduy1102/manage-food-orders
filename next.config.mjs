@@ -6,8 +6,8 @@ const nextConfig = {
   images: {
     remotePatterns: [
       {
-        hostname: "localhost",
-        // hostname: "api-bigboy.duthanhduoc.com",
+        // hostname: "localhost",
+        hostname: "api-bigboy.duthanhduoc.com",
         pathname: "/**",
       },
       {
